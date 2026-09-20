@@ -106,8 +106,14 @@
     background:var(--surface-2);color:var(--text);box-shadow:none;
   }
 
-  /* ---- Mascot: Silvio, science boy in a lab coat ---- */
+  /* ---- Mascot: Silvio, science boy — pseudo-3D (gradients + shading) ---- */
   .silvio{position:relative;width:96px;height:96px;flex-shrink:0;overflow:visible;}
+  .silvio::after{
+    content:"";position:absolute;left:50%;bottom:-10%;transform:translateX(-50%);
+    width:64%;height:9%;
+    background:radial-gradient(ellipse, rgba(0,0,0,.4), transparent 72%);
+    z-index:0;
+  }
   .silvio .coat{
     position:absolute;left:50%;bottom:-14%;transform:translateX(-50%);
     width:128%;height:46%;z-index:1;
@@ -121,53 +127,69 @@
   }
   .silvio .coat .lapel.left{left:14%;clip-path:polygon(0 0,100% 0,40% 100%,0 60%);}
   .silvio .coat .lapel.right{right:14%;clip-path:polygon(0 0,100% 0,100% 60%,60% 100%);}
-  .silvio .coat .collar-line{
-    position:absolute;left:50%;top:4%;transform:translateX(-50%);
-    width:14%;height:55%;background:var(--cyan);border-radius:2px;
+  .silvio .badge{
+    position:absolute;right:2%;bottom:4%;width:20%;height:20%;z-index:2;
+    background:radial-gradient(circle at 32% 28%, #8FE0F5, var(--cap-shade,var(--cyan)));
+    border-radius:50%;border:2px solid #fff;box-shadow:0 2px 0 rgba(0,0,0,.25);
   }
   .silvio .head{
-    width:82%;height:82%;border-radius:50%;
-    margin:0 auto;
-    background:linear-gradient(160deg, var(--skin), var(--skin-shade));
-    position:relative;z-index:2;
-    display:flex;align-items:center;justify-content:center;
-    box-shadow:inset 0 -8px 0 rgba(0,0,0,.15);
+    width:80%;height:80%;border-radius:50%;
+    margin:0 auto;position:relative;z-index:2;
+    background:radial-gradient(circle at 32% 28%, #C08F63, var(--skin) 55%, var(--skin-shade) 100%);
+    box-shadow:inset 0 -10px 14px rgba(0,0,0,.25), inset 0 8px 10px rgba(255,255,255,.15);
     animation:bob 2.6s ease-in-out infinite;
   }
-  .silvio .hair{
-    position:absolute;top:-14%;left:50%;transform:translateX(-50%);
-    width:98%;height:52%;background:var(--hair);
-    border-radius:50% 50% 40% 40%/62% 62% 30% 30%;
-    z-index:3;
-  }
-  .silvio .hair::after{
-    content:"";position:absolute;left:-6%;bottom:-6%;width:14%;height:34%;
-    background:var(--hair);border-radius:0 0 60% 60%;
-  }
   @keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-6px) rotate(2deg);}}
-  .silvio .goggles{
-    position:absolute;top:38%;left:50%;transform:translate(-50%,0);
-    width:66%;height:26%;z-index:3;
+  .silvio.happy .head{box-shadow:inset 0 -10px 14px rgba(0,0,0,.25), inset 0 8px 10px rgba(255,255,255,.15), 0 0 0 3px var(--lime);}
+  .silvio.sad .head{box-shadow:inset 0 -10px 14px rgba(0,0,0,.25), inset 0 8px 10px rgba(255,255,255,.15), 0 0 0 3px var(--pink);}
+  .silvio .cap{
+    position:absolute;top:-15%;left:50%;transform:translateX(-50%);
+    width:98%;height:54%;z-index:3;
+    background:radial-gradient(circle at 35% 25%, #8FE0F5, var(--cyan) 55%, #1E88B8 100%);
+    border-radius:50% 50% 38% 38%/62% 62% 30% 30%;
+    box-shadow:inset 0 -6px 8px rgba(0,0,0,.2), inset 0 6px 8px rgba(255,255,255,.35);
+  }
+  .silvio .cap::after{
+    content:"";position:absolute;left:4%;right:4%;bottom:10%;height:9%;
+    background:rgba(10,50,70,.32);border-radius:20px;
+  }
+  .silvio .brow{position:absolute;top:33%;width:18%;height:5%;z-index:4;background:#1A0F08;border-radius:6px;}
+  .silvio .brow.left{left:18%;transform:rotate(-6deg);}
+  .silvio .brow.right{right:18%;transform:rotate(6deg);}
+  .silvio .eyes{
+    position:absolute;top:39%;left:50%;transform:translate(-50%,0);
+    width:64%;height:24%;z-index:4;
     display:flex;justify-content:space-between;
   }
   .silvio .eye{
     width:38%;height:100%;border-radius:50%;
     background:#0B0B1F;border:3px solid #EDEFF7;
     display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 3px rgba(0,0,0,.3);
   }
-  .silvio .pupil{width:35%;height:35%;border-radius:50%;background:var(--cyan);}
-  .silvio .mouth{
-    position:absolute;bottom:16%;left:50%;transform:translateX(-50%);
-    width:32%;height:10%;border-radius:0 0 20px 20px;background:#3A231A;z-index:3;
-  }
-  .silvio.sad .mouth{border-radius:20px 20px 0 0;bottom:14%;background:#7a2233;}
+  .silvio .pupil{width:40%;height:40%;border-radius:50%;background:var(--cyan);position:relative;}
+  .silvio .pupil::after{content:"";position:absolute;top:12%;left:15%;width:35%;height:35%;background:#fff;border-radius:50%;opacity:.9;}
   .silvio.sad .pupil{background:var(--pink);}
-  .silvio.happy .mouth{height:14%;background:#3A231A;border-radius:0 0 30px 30px;}
+  .silvio .mask{
+    position:absolute;left:50%;bottom:6%;transform:translateX(-50%);
+    width:58%;height:32%;z-index:5;
+    background:linear-gradient(180deg, #CFEFFB, #9FD9EE);
+    border-radius:6px 6px 48% 48%/6px 6px 70% 70%;
+    box-shadow:inset 0 4px 6px rgba(255,255,255,.6), inset 0 -4px 8px rgba(0,0,0,.18);
+  }
+  .silvio .mask .pleat{position:absolute;left:10%;right:10%;height:2px;background:rgba(0,0,0,.12);}
+  .silvio .mask .pleat:nth-child(1){top:30%;}
+  .silvio .mask .pleat:nth-child(2){top:50%;}
+  .silvio .mask .pleat:nth-child(3){top:70%;}
+  .silvio .mask .strap{position:absolute;top:22%;width:32%;height:3px;background:#fff;border-radius:2px;}
+  .silvio .mask .strap.left{left:-26%;transform:rotate(8deg);}
+  .silvio .mask .strap.right{right:-26%;transform:rotate(-8deg);}
   .silvio-flask{
-    position:absolute;bottom:-6%;right:-8%;width:26%;height:30%;z-index:4;
-    background:rgba(62,198,255,.9);
+    position:absolute;bottom:-6%;right:-8%;width:26%;height:30%;z-index:6;
+    background:linear-gradient(180deg, var(--lime), #7FBF1F);
     clip-path:polygon(35% 0,65% 0,65% 35%,100% 100%,0 100%,35% 35%);
     border-radius:0 0 8px 8px;
+    box-shadow:0 2px 0 rgba(0,0,0,.2);
   }
 
   /* ---- Top bar / stat chips ---- */
@@ -354,6 +376,26 @@
   }
   .badge.locked{opacity:.35;}
 
+  /* ---- Sound / voice toggles ---- */
+  .icon-toggles{
+    position:fixed;top:calc(14px + env(safe-area-inset-top,0px));right:14px;z-index:30;
+    display:flex;gap:8px;
+  }
+  .icon-toggle{
+    width:38px;height:38px;border-radius:50%;
+    background:var(--surface);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;font-size:16px;
+  }
+
+  /* ---- Confetti ---- */
+  .confetti-piece{
+    position:fixed;top:-20px;width:8px;height:14px;z-index:60;pointer-events:none;
+    animation:confettiFall linear forwards;
+  }
+  @keyframes confettiFall{
+    to{ transform:translateY(110vh) rotate(540deg); opacity:.9; }
+  }
+
   /* ---- Diploma ---- */
   .diploma-card{
     background:linear-gradient(180deg, #1C1C40, #15152F);
@@ -397,6 +439,11 @@
 </head>
 <body>
 <div id="app">
+
+    <div class="icon-toggles">
+    <button class="icon-toggle" id="btn-sound-toggle" title="Som">🔊</button>
+    <button class="icon-toggle" id="btn-voice-toggle" title="Voz do Silvio">🗣️</button>
+  </div>
 
   <!-- ONBOARDING -->
   <div class="screen active" id="screen-onboarding">
@@ -560,6 +607,7 @@
       <div class="stat-box"><div class="stat-num" id="prof-score">0</div><div class="stat-label">Pontuação</div></div>
       <div class="stat-box"><div class="stat-num" id="prof-streak">0</div><div class="stat-label">Sequência (dias)</div></div>
       <div class="stat-box"><div class="stat-num" id="prof-phases">0/15</div><div class="stat-label">Fases concluídas</div></div>
+      <div class="stat-box"><div class="stat-num" id="prof-beststreak">0</div><div class="stat-label">Melhor sequência</div></div>
     </div>
     <h3 style="font-size:15px;margin:6px 0 12px;">Progresso por área</h3>
     <div id="prof-areas"></div>
@@ -641,27 +689,81 @@
         { id:"b1", title:"Matéria e Estados Físicos", questions:[
           {type:"mcq", q:"Em que estado físico as partículas estão mais organizadas e vibram no mesmo lugar?", options:["Sólido","Líquido","Gasoso","Plasma"], correct:0, explain:"No estado sólido as partículas estão muito próximas e organizadas, apenas vibram, sem se deslocar."},
           {type:"mcq", q:"A passagem direta do estado sólido para o gasoso chama-se:", options:["Fusão","Sublimação","Condensação","Solidificação"], correct:1, explain:"Sublimação é a passagem direta de sólido para gás, sem passar por líquido — como acontece com o gelo seco (CO₂ sólido)."},
-          {type:"mcq", q:"Qual destas é uma propriedade física (não química) da matéria?", options:["Ponto de ebulição","Capacidade de arder","Reagir com ácido","Oxidar-se"], correct:0, explain:"O ponto de ebulição é uma propriedade física: pode ser medido sem alterar a composição da substância."}
+          {type:"mcq", q:"Qual destas é uma propriedade física (não química) da matéria?", options:["Ponto de ebulição","Capacidade de arder","Reagir com ácido","Oxidar-se"], correct:0, explain:"O ponto de ebulição é uma propriedade física: pode ser medido sem alterar a composição da substância."},
+          {type:"mcq", q:"A passagem do estado gasoso para o estado líquido chama-se:", options:["Fusão","Evaporação","Condensação","Solidificação"], correct:2, explain:"Condensação é a passagem de gás para líquido — é o que acontece quando o vapor de água forma gotas num copo gelado."}
         ]},
         { id:"b2", title:"Átomos e Elementos", questions:[
           {type:"mcq", q:"Qual é a partícula do átomo com carga positiva?", options:["Eletrão","Protão","Neutrão","Ião"], correct:1, explain:"O protão tem carga positiva e está no núcleo do átomo, junto com os neutrões (sem carga)."},
           {type:"mcq", q:"O número atómico de um elemento indica o número de:", options:["Neutrões","Protões","Eletrões na última camada","Isótopos"], correct:1, explain:"O número atómico (Z) é o número de protões no núcleo — é o que identifica o elemento químico."},
-          {type:"fill", q:"Escreve o símbolo químico do elemento Oxigénio.", accept:["o"], explain:"O símbolo do Oxigénio é O, com maiúscula."}
+          {type:"fill", q:"Escreve o símbolo químico do elemento Oxigénio.", accept:["o"], explain:"O símbolo do Oxigénio é O, com maiúscula."},
+          {type:"fill", q:"Escreve o símbolo químico do elemento Hidrogénio.", accept:["h"], explain:"O símbolo do Hidrogénio é H — o elemento mais simples e abundante do universo."}
         ]},
         { id:"b3", title:"Símbolos Químicos", questions:[
           {type:"fill", q:"Escreve o símbolo químico do Sódio.", accept:["na"], explain:"Sódio = Na (do latim 'natrium')."},
           {type:"fill", q:"Escreve o símbolo químico do Ferro.", accept:["fe"], explain:"Ferro = Fe (do latim 'ferrum')."},
-          {type:"mcq", q:"O símbolo 'K' representa qual elemento?", options:["Potássio","Cálcio","Crómio","Carbono"], correct:0, explain:"K vem do latim 'kalium' e representa o Potássio."}
+          {type:"mcq", q:"O símbolo 'K' representa qual elemento?", options:["Potássio","Cálcio","Crómio","Carbono"], correct:0, explain:"K vem do latim 'kalium' e representa o Potássio."},
+          {type:"mcq", q:"O símbolo 'Ag' representa qual elemento?", options:["Ouro","Prata","Alumínio","Árgon"], correct:1, explain:"Ag vem do latim 'argentum' e representa a Prata."}
         ]},
         { id:"b4", title:"Tabela Periódica Básica", questions:[
           {type:"mcq", q:"Na tabela periódica, os elementos estão organizados por ordem crescente de:", options:["Massa em gramas","Número atómico","Cor","Preço de mercado"], correct:1, explain:"A tabela periódica moderna organiza os elementos por número atómico crescente."},
           {type:"mcq", q:"Os elementos de um mesmo grupo (coluna) da tabela periódica têm em comum:", options:["O mesmo número de eletrões de valência","A mesma cor","O mesmo estado físico sempre","O mesmo preço"], correct:0, explain:"Elementos do mesmo grupo têm o mesmo número de eletrões na última camada, por isso têm propriedades químicas parecidas."},
-          {type:"mcq", q:"Os gases nobres são conhecidos por serem:", options:["Muito reativos","Quase inertes (pouco reativos)","Metais pesados","Líquidos à temperatura ambiente"], correct:1, explain:"Os gases nobres têm a última camada de eletrões completa, por isso reagem muito pouco."}
+          {type:"mcq", q:"Os gases nobres são conhecidos por serem:", options:["Muito reativos","Quase inertes (pouco reativos)","Metais pesados","Líquidos à temperatura ambiente"], correct:1, explain:"Os gases nobres têm a última camada de eletrões completa, por isso reagem muito pouco."},
+          {type:"mcq", q:"As linhas horizontais da tabela periódica chamam-se:", options:["Grupos","Períodos","Blocos","Famílias"], correct:1, explain:"As linhas horizontais chamam-se períodos; as colunas verticais chamam-se grupos."}
         ]},
         { id:"b5", title:"Misturas e Substâncias Puras", questions:[
           {type:"mcq", q:"A água do mar é um exemplo de:", options:["Substância pura","Mistura homogénea","Elemento químico","Composto puro"], correct:1, explain:"A água do mar é uma mistura homogénea: sal e outros minerais dissolvidos de forma uniforme na água."},
           {type:"mcq", q:"Qual técnica separa areia de água?", options:["Destilação","Filtração","Decantação eletrónica","Fusão"], correct:1, explain:"A filtração separa um sólido insolúvel (areia) de um líquido (água) usando um filtro."},
           {type:"mcq", q:"Uma mistura em que se distinguem as fases a olho nu chama-se:", options:["Homogénea","Heterogénea","Composta","Isotópica"], correct:1, explain:"Numa mistura heterogénea, como óleo e água, conseguimos ver as diferentes partes separadamente."}
+        ]},
+        { id:"b6", title:"Fenómenos Físicos e Químicos", questions:[
+          {type:"mcq", q:"Derreter um cubo de gelo é um fenómeno:", options:["Químico","Físico","Nuclear","Biológico"], correct:1, explain:"Fundir gelo muda o estado físico da água, mas não a sua composição — é um fenómeno físico."},
+          {type:"mcq", q:"Queimar um pedaço de papel é um fenómeno:", options:["Físico","Químico","Nem físico nem químico","Só térmico"], correct:1, explain:"A queima transforma o papel noutras substâncias (cinza, CO₂, vapor de água) — é um fenómeno químico, e irreversível."},
+          {type:"mcq", q:"Dobrar uma folha de alumínio é um fenómeno:", options:["Químico","Físico","Radioativo","Catalítico"], correct:1, explain:"Dobrar muda apenas a forma do alumínio, não a sua composição — é físico e reversível."}
+        ]},
+        { id:"b7", title:"Unidades de Medida em Química", questions:[
+          {type:"mcq", q:"A unidade padrão de massa no Sistema Internacional é:", options:["Litro","Quilograma","Metro","Segundo"], correct:1, explain:"O quilograma (kg) é a unidade base de massa; em laboratório usa-se muitas vezes o grama (g)."},
+          {type:"mcq", q:"A unidade padrão de volume para líquidos, usada em laboratório, é:", options:["Grama","Litro","Kelvin","Mol"], correct:1, explain:"O litro (e o mililitro) é a unidade mais usada para medir volumes de líquidos em química."},
+          {type:"mcq", q:"A escala de temperatura usada como padrão científico em química é:", options:["Fahrenheit","Celsius apenas","Kelvin","Réaumur"], correct:2, explain:"O Kelvin é a escala do Sistema Internacional, usada em cálculos científicos porque começa no zero absoluto."}
+        ]},
+        { id:"b8", title:"Densidade", questions:[
+          {type:"mcq", q:"A densidade de uma substância é a razão entre:", options:["Massa e volume","Peso e altura","Volume e tempo","Massa e temperatura"], correct:0, explain:"Densidade = massa ÷ volume. É por isso que o óleo, menos denso, flutua sobre a água."},
+          {type:"mcq", q:"Se um objeto tem densidade menor que a da água, ao ser colocado em água ele:", options:["Afunda","Flutua","Dissolve-se","Evapora"], correct:1, explain:"Um material menos denso que a água flutua à superfície — é por isso que o gelo (menos denso que a água líquida) flutua."},
+          {type:"fill", q:"Se um objeto tem massa 20 g e volume 10 mL, qual é a sua densidade em g/mL? (número)", accept:["2","2.0","2,0"], explain:"Densidade = massa ÷ volume = 20 g ÷ 10 mL = 2 g/mL."}
+        ]},
+        { id:"b9", title:"Solubilidade", questions:[
+          {type:"mcq", q:"Quando o sal se dissolve completamente na água, dizemos que a água é o:", options:["Soluto","Solvente","Precipitado","Catalisador"], correct:1, explain:"O solvente é a substância presente em maior quantidade que dissolve o soluto (neste caso, o sal)."},
+          {type:"mcq", q:"Regra geral, dissolver mais açúcar em água quente do que em água fria acontece porque a solubilidade normalmente:", options:["Diminui com a temperatura","Aumenta com a temperatura","Não depende da temperatura","Só depende da pressão"], correct:1, explain:"Para a maioria dos sólidos, a solubilidade em água aumenta com a temperatura — por isso o chá dissolve melhor o açúcar quando está quente."},
+          {type:"mcq", q:"Uma solução que já não consegue dissolver mais soluto a uma dada temperatura chama-se:", options:["Diluída","Concentrada","Saturada","Neutra"], correct:2, explain:"Uma solução saturada atingiu o limite de soluto que consegue dissolver naquela temperatura."}
+        ]},
+        { id:"b10", title:"Segurança no Laboratório", questions:[
+          {type:"mcq", q:"Antes de qualquer experiência, o mais importante é:", options:["Provar os reagentes", "Ler o rótulo e usar equipamento de proteção","Misturar tudo rapidamente","Trabalhar sem luvas para sentir melhor"], correct:1, explain:"Ler os rótulos e usar proteção (óculos, luvas) é a primeira regra de segurança em qualquer laboratório."},
+          {type:"mcq", q:"Se um ácido entrar em contacto com a pele, a primeira ação correta é:", options:["Esfregar com força","Lavar imediatamente com água abundante","Aplicar outro produto químico para neutralizar","Ignorar se não arder"], correct:1, explain:"Lavar com água abundante e imediatamente é o procedimento padrão para diluir e remover o ácido da pele."},
+          {type:"mcq", q:"Nunca se deve cheirar um produto químico diretamente porque:", options:["Pode ser inofensivo mas feio","Pode ser tóxico ou irritante para as vias respiratórias","É contra as regras sem motivo","Estraga o produto"], correct:1, explain:"Muitos vapores químicos são tóxicos ou irritantes; por segurança, cheira-se sempre abanando o vapor em direção ao nariz, nunca diretamente."}
+        ]},
+        { id:"b11", title:"Números Atómicos e Isótopos", questions:[
+          {type:"mcq", q:"Dois átomos do mesmo elemento com número diferente de neutrões chamam-se:", options:["Iões","Isótopos","Isómeros","Catiões"], correct:1, explain:"Isótopos são átomos do mesmo elemento (mesmo número de protões) mas com número diferente de neutrões."},
+          {type:"mcq", q:"O número de massa de um átomo é a soma de:", options:["Protões e eletrões","Protões e neutrões","Neutrões e eletrões","Só neutrões"], correct:1, explain:"O número de massa (A) soma o número de protões e neutrões no núcleo — os eletrões têm massa desprezável."},
+          {type:"fill", q:"O isótopo de Hidrogénio com 1 neutrão chama-se deutério. Como se chama o isótopo com 2 neutrões?", accept:["tritio","trítio"], explain:"O trítio é o isótopo de Hidrogénio com 1 protão e 2 neutrões, usado por exemplo em certas aplicações científicas."}
+        ]},
+        { id:"b12", title:"Propriedades Organoléticas", questions:[
+          {type:"mcq", q:"Propriedades que percebemos através dos sentidos, como cor, cheiro e sabor, chamam-se:", options:["Nucleares","Organolépticas","Radioativas","Catalíticas"], correct:1, explain:"Propriedades organolépticas são as que detetamos com os sentidos — visão, olfato, paladar, tato."},
+          {type:"mcq", q:"O cheiro característico a 'ovo podre' está normalmente associado ao gás:", options:["Oxigénio","Sulfureto de hidrogénio","Azoto","Hélio"], correct:1, explain:"O sulfureto de hidrogénio (H₂S) tem um cheiro muito característico e desagradável, semelhante a ovo podre."},
+          {type:"mcq", q:"A cor de uma substância, tal como o ponto de ebulição, é uma propriedade:", options:["Química","Física","Nuclear","Impossível de medir"], correct:1, explain:"A cor pode ser observada e medida sem alterar a composição química da substância — é uma propriedade física."}
+        ]},
+        { id:"b13", title:"Sistema Métrico e Conversões", questions:[
+          {type:"fill", q:"Quantos mililitros há num litro? (número)", accept:["1000"], explain:"1 litro = 1000 mililitros (mL) — uma conversão muito usada em laboratório."},
+          {type:"fill", q:"Quantos gramas há num quilograma? (número)", accept:["1000"], explain:"1 quilograma (kg) = 1000 gramas (g)."},
+          {type:"fill", q:"Converte 2,5 litros para mililitros (número, sem vírgula)", accept:["2500"], explain:"2,5 L × 1000 = 2500 mL."}
+        ]},
+        { id:"b14", title:"Reciclagem e Símbolos dos Materiais", questions:[
+          {type:"mcq", q:"Separar o lixo por tipo de material (vidro, papel, plástico, metal) ajuda principalmente a:", options:["Aumentar o lixo","Facilitar a reciclagem","Poluir mais depressa","Não tem nenhum efeito"], correct:1, explain:"Separar por tipo de material facilita muito o processo de reciclagem, tornando-o mais eficiente e menos poluente."},
+          {type:"mcq", q:"O vidro é um material que, quimicamente, pode ser reciclado:", options:["Só uma vez","Nunca","Praticamente infinitas vezes","Só se for transparente"], correct:2, explain:"O vidro pode ser fundido e reciclado repetidamente, quase sem perder qualidade — um dos materiais mais recicláveis que existem."},
+          {type:"mcq", q:"Os símbolos numerados (1 a 7) em embalagens de plástico servem para indicar:", options:["O preço do produto","O tipo de resina plástica usada","A data de validade","A cor do plástico"], correct:1, explain:"Cada número identifica um tipo diferente de resina plástica (ex: PET, PEAD), o que ajuda na triagem para reciclagem."}
+        ]},
+        { id:"b15", title:"Química no Corpo Humano", questions:[
+          {type:"mcq", q:"Qual é o composto químico mais abundante no corpo humano?", options:["Proteína","Água","Cálcio","Glicose"], correct:1, explain:"A água representa cerca de 60% do peso corporal de um adulto — é o composto mais abundante no corpo humano."},
+          {type:"mcq", q:"O gás essencial que respiramos, usado na respiração celular para produzir energia, é:", options:["Azoto","Oxigénio","Dióxido de carbono","Hélio"], correct:1, explain:"O oxigénio é usado pelas células para libertar energia dos alimentos através da respiração celular."},
+          {type:"mcq", q:"Os ossos humanos são ricos principalmente em qual elemento químico, além do fósforo?", options:["Sódio","Cálcio","Potássio","Ferro"], correct:1, explain:"O cálcio é o mineral mais abundante nos ossos e dentes, essencial para a sua dureza e estrutura."}
         ]}
       ]
     },
@@ -671,27 +773,82 @@
         { id:"m1", title:"Ligações Químicas", questions:[
           {type:"mcq", q:"A ligação em que há partilha de eletrões entre átomos chama-se:", options:["Iónica","Covalente","Metálica","Nuclear"], correct:1, explain:"Na ligação covalente, os átomos partilham pares de eletrões — típico entre não-metais, como em H₂O."},
           {type:"mcq", q:"A ligação entre um metal e um não-metal, com transferência de eletrões, chama-se:", options:["Covalente","Iónica","Metálica","De hidrogénio"], correct:1, explain:"Na ligação iónica há transferência de eletrões, formando iões positivos e negativos que se atraem — como no NaCl."},
-          {type:"mcq", q:"Nos metais, os eletrões de valência formam o que se chama:", options:["Mar de eletrões","Nuvem ácida","Rede covalente","Camada de valência fixa"], correct:0, explain:"Na ligação metálica, os eletrões de valência movem-se livremente formando o chamado 'mar de eletrões'."}
+          {type:"mcq", q:"Nos metais, os eletrões de valência formam o que se chama:", options:["Mar de eletrões","Nuvem ácida","Rede covalente","Camada de valência fixa"], correct:0, explain:"Na ligação metálica, os eletrões de valência movem-se livremente formando o chamado 'mar de eletrões'."},
+          {type:"mcq", q:"As forças que mantêm as moléculas de água unidas no gelo chamam-se:", options:["Pontes de hidrogénio","Ligações metálicas","Ligações nucleares","Forças gravitacionais"], correct:0, explain:"As pontes (ligações) de hidrogénio são atrações entre moléculas de água, responsáveis pela estrutura do gelo e por muitas propriedades da água."}
         ]},
         { id:"m2", title:"Fórmulas Químicas", questions:[
           {type:"fill", q:"Escreve a fórmula química da água.", accept:["h2o"], explain:"A água é H₂O: dois átomos de hidrogénio e um de oxigénio."},
           {type:"fill", q:"Escreve a fórmula química do dióxido de carbono.", accept:["co2"], explain:"Dióxido de carbono = CO₂: um carbono ligado a dois oxigénios."},
-          {type:"fill", q:"Escreve a fórmula química do cloreto de sódio (sal de cozinha).", accept:["nacl"], explain:"Cloreto de sódio = NaCl, formado por iões Na⁺ e Cl⁻."}
+          {type:"fill", q:"Escreve a fórmula química do cloreto de sódio (sal de cozinha).", accept:["nacl"], explain:"Cloreto de sódio = NaCl, formado por iões Na⁺ e Cl⁻."},
+          {type:"fill", q:"Escreve a fórmula química do amoníaco.", accept:["nh3"], explain:"Amoníaco = NH₃: um azoto ligado a três hidrogénios, muito usado em produtos de limpeza e fertilizantes."}
         ]},
         { id:"m3", title:"Reações Químicas", questions:[
           {type:"fill", q:"Completa: bicarbonato de sódio + ácido acético → sal + água + ___", accept:["dioxido de carbono","co2","dioxido de carbono gasoso"], explain:"Essa reação liberta dióxido de carbono (CO₂), o gás que faz a mistura borbulhar — como no vulcão de bicarbonato."},
           {type:"mcq", q:"Numa reação exotérmica, o sistema:", options:["Absorve calor do ambiente","Liberta calor para o ambiente","Não troca energia","Fica sempre mais frio"], correct:1, explain:"Reações exotérmicas libertam energia (calor) para o ambiente — por isso o recipiente fica quente."},
-          {type:"mcq", q:"Numa equação química equilibrada, o número de átomos de cada elemento:", options:["Deve ser diferente nos dois lados","Deve ser igual nos dois lados","Só importa do lado dos reagentes","Não é relevante"], correct:1, explain:"Pela Lei da Conservação da Massa, o número de átomos de cada elemento tem de ser igual nos reagentes e nos produtos."}
+          {type:"mcq", q:"Numa equação química equilibrada, o número de átomos de cada elemento:", options:["Deve ser diferente nos dois lados","Deve ser igual nos dois lados","Só importa do lado dos reagentes","Não é relevante"], correct:1, explain:"Pela Lei da Conservação da Massa, o número de átomos de cada elemento tem de ser igual nos reagentes e nos produtos."},
+          {type:"mcq", q:"Uma reação de combustão envolve sempre a participação de:", options:["Água","Oxigénio","Sal","Um metal"], correct:1, explain:"Combustão é a reação de uma substância com oxigénio, libertando geralmente calor e luz — como quando algo arde."}
         ]},
         { id:"m4", title:"Ácidos e Bases", questions:[
           {type:"mcq", q:"Uma substância com pH inferior a 7 é considerada:", options:["Ácida","Básica (alcalina)","Neutra","Radioativa"], correct:0, explain:"O pH vai de 0 a 14: valores abaixo de 7 indicam soluções ácidas, como o vinagre e o sumo de limão."},
           {type:"mcq", q:"O papel de tornassol azul fica vermelho na presença de:", options:["Uma base","Um ácido","Água pura","Um sal neutro"], correct:1, explain:"Ácidos tornam o papel de tornassol azul em vermelho; bases fazem o oposto (vermelho para azul)."},
-          {type:"mcq", q:"Qual destes é um exemplo de base (alcalino) do dia a dia?", options:["Vinagre","Sumo de limão","Sabão / detergente","Coca-Cola"], correct:2, explain:"Sabões e muitos detergentes são básicos (alcalinos), com pH acima de 7."}
+          {type:"mcq", q:"Qual destes é um exemplo de base (alcalino) do dia a dia?", options:["Vinagre","Sumo de limão","Sabão / detergente","Coca-Cola"], correct:2, explain:"Sabões e muitos detergentes são básicos (alcalinos), com pH acima de 7."},
+          {type:"mcq", q:"O pH da água pura, a 25°C, é aproximadamente:", options:["0","7","14","-7"], correct:1, explain:"A água pura tem pH neutro, cerca de 7 — nem ácida nem básica."}
         ]},
         { id:"m5", title:"Massa Atómica e Mol", questions:[
           {type:"mcq", q:"O mol é a unidade usada para medir:", options:["Temperatura","Quantidade de substância","Pressão","Densidade"], correct:1, explain:"O mol é a unidade do Sistema Internacional para 'quantidade de substância' — 1 mol contém cerca de 6,02×10²³ partículas."},
           {type:"mcq", q:"O número de Avogadro é aproximadamente:", options:["6,02 × 10²³","3,14 × 10⁸","9,8 × 10¹⁰","1,6 × 10⁻¹⁹"], correct:0, explain:"O número de Avogadro (6,02×10²³) indica quantas partículas existem em 1 mol de qualquer substância."},
-          {type:"mcq", q:"A massa molar da água (H₂O) é aproximadamente:", options:["16 g/mol","18 g/mol","20 g/mol","44 g/mol"], correct:1, explain:"H (1g/mol) × 2 + O (16g/mol) = 18 g/mol, a massa molar da água."}
+          {type:"mcq", q:"A massa molar da água (H₂O) é aproximadamente:", options:["16 g/mol","18 g/mol","20 g/mol","44 g/mol"], correct:1, explain:"H (1g/mol) × 2 + O (16g/mol) = 18 g/mol, a massa molar da água."},
+          {type:"mcq", q:"A massa molar aproximada do dióxido de carbono (CO₂) é:", options:["28 g/mol","32 g/mol","44 g/mol","60 g/mol"], correct:2, explain:"C (12 g/mol) + O (16 g/mol) × 2 = 44 g/mol, a massa molar do CO₂."}
+        ]},
+        { id:"m6", title:"Metais, Não-metais e Metaloides", questions:[
+          {type:"mcq", q:"A maioria dos metais, à temperatura ambiente, são bons condutores de:", options:["Calor e eletricidade","Apenas som","Apenas luz","Nenhuma destas"], correct:0, explain:"Os metais são geralmente bons condutores térmicos e elétricos, graças aos eletrões livres na ligação metálica."},
+          {type:"mcq", q:"Um elemento com propriedades intermédias entre metal e não-metal chama-se:", options:["Isótopo","Metaloide","Catalisador","Isómero"], correct:1, explain:"Metaloides, como o silício, têm propriedades entre as dos metais e as dos não-metais."},
+          {type:"mcq", q:"Os não-metais, geralmente, são maus condutores de eletricidade e podem ser:", options:["Só sólidos","Sólidos, líquidos ou gasosos","Só gasosos","Só líquidos"], correct:1, explain:"Não-metais existem nos três estados físicos à temperatura ambiente: sólidos (enxofre), líquidos (bromo) e gasosos (oxigénio)."}
+        ]},
+        { id:"m7", title:"Concentração de Soluções", questions:[
+          {type:"mcq", q:"A concentração de uma solução relaciona a quantidade de:", options:["Soluto com a quantidade de solução","Cor com o cheiro","Temperatura com a pressão","Tempo com a massa"], correct:0, explain:"Concentração é, tipicamente, a quantidade de soluto (ex: em gramas ou mol) por quantidade de solução (ex: por litro)."},
+          {type:"mcq", q:"Uma solução com pouco soluto dissolvido, em relação ao solvente, diz-se:", options:["Concentrada","Diluída","Saturada","Sólida"], correct:1, explain:"Uma solução diluída tem pouco soluto por unidade de volume de solução."},
+          {type:"fill", q:"Se dissolvermos 10 g de sal em água até obter 1 litro de solução, qual é a concentração em g/L? (número)", accept:["10"], explain:"Concentração (g/L) = massa de soluto ÷ volume de solução = 10 g ÷ 1 L = 10 g/L."}
+        ]},
+        { id:"m8", title:"Velocidade das Reações", questions:[
+          {type:"mcq", q:"Aumentar a temperatura de uma reação, geralmente, faz a velocidade da reação:", options:["Diminuir","Aumentar","Ficar igual","Parar completamente"], correct:1, explain:"Temperaturas mais altas dão mais energia às partículas, que colidem com mais frequência e força — a reação acelera."},
+          {type:"mcq", q:"Uma substância que acelera uma reação sem ser consumida nela chama-se:", options:["Reagente limitante","Catalisador","Produto secundário","Solvente"], correct:1, explain:"Um catalisador baixa a energia necessária para a reação ocorrer, acelerando-a, mas sai inalterado no final."},
+          {type:"mcq", q:"Triturar um sólido em pó, em vez de o usar em pedaços grandes, geralmente faz a reação:", options:["Mais lenta","Mais rápida","Sem alteração","Parar"], correct:1, explain:"Mais superfície de contacto significa mais colisões entre partículas por segundo, acelerando a reação."}
+        ]},
+        { id:"m9", title:"Gases e Pressão", questions:[
+          {type:"mcq", q:"Se a temperatura de um gás aumenta, mantendo o volume fixo, a pressão do gás tende a:", options:["Diminuir","Aumentar","Ficar constante","Ser zero"], correct:1, explain:"Partículas mais quentes movem-se mais depressa e colidem com mais força nas paredes do recipiente, aumentando a pressão."},
+          {type:"mcq", q:"Comprimir um gás num volume menor, mantendo a temperatura, faz a pressão:", options:["Diminuir","Aumentar","Não mudar","Ficar negativa"], correct:1, explain:"Com menos espaço, as partículas colidem mais vezes com as paredes por segundo — a pressão sobe."},
+          {type:"mcq", q:"O ar que enche um pneu é uma mistura composta principalmente por:", options:["Oxigénio e hidrogénio","Azoto e oxigénio","Dióxido de carbono puro","Hélio e néon"], correct:1, explain:"O ar atmosférico é cerca de 78% azoto e 21% oxigénio, com pequenas quantidades de outros gases."}
+        ]},
+        { id:"m10", title:"Poluição e Química Ambiental", questions:[
+          {type:"mcq", q:"O principal gás associado ao efeito de estufa, resultante da queima de combustíveis fósseis, é:", options:["Oxigénio","Dióxido de carbono","Azoto","Hélio"], correct:1, explain:"O CO₂ liberado na queima de combustíveis fósseis é um dos principais gases responsáveis pelo efeito de estufa."},
+          {type:"mcq", q:"A chuva ácida forma-se principalmente pela reação da água da chuva com gases como:", options:["Oxigénio e azoto puro","Óxidos de enxofre e de azoto","Vapor de água apenas","Hélio e néon"], correct:1, explain:"Óxidos de enxofre (SOx) e de azoto (NOx), libertados por indústrias e veículos, reagem com a água da chuva formando ácidos."},
+          {type:"mcq", q:"Reciclar plástico é importante, do ponto de vista químico, porque muitos plásticos:", options:["Se decompõem em dias","Demoram centenas de anos a degradar-se","São feitos só de água","Não têm carbono"], correct:1, explain:"Muitos polímeros plásticos são muito estáveis quimicamente e demoram séculos a degradar-se na natureza."}
+        ]},
+        { id:"m11", title:"Nomenclatura de Compostos Iónicos", questions:[
+          {type:"mcq", q:"O composto de fórmula NaCl chama-se:", options:["Óxido de sódio","Cloreto de sódio","Sulfato de sódio","Carbonato de sódio"], correct:1, explain:"NaCl é o cloreto de sódio — o sal de cozinha comum."},
+          {type:"mcq", q:"Em compostos iónicos binários simples (dois elementos), o nome do não-metal costuma terminar em:", options:["-ato","-eto","-oso","-ico"], correct:1, explain:"Terminações como '-eto' são típicas de compostos binários — cloreto, óxido, sulfureto, por exemplo."},
+          {type:"fill", q:"Escreve o nome do composto CaO (um metal + oxigénio).", accept:["oxido de calcio","óxido de cálcio"], explain:"CaO é o óxido de cálcio, também conhecido como cal viva."}
+        ]},
+        { id:"m12", title:"Óxidos", questions:[
+          {type:"mcq", q:"Óxidos são compostos binários formados pela combinação de oxigénio com:", options:["Outro elemento qualquer","Apenas metais","Apenas gases nobres","Apenas água"], correct:0, explain:"Um óxido é o composto resultante da combinação do oxigénio com praticamente qualquer outro elemento, metal ou não-metal."},
+          {type:"mcq", q:"O CO₂ (dióxido de carbono), dissolvido em água, tende a formar uma solução:", options:["Básica","Ácida","Neutra","Radioativa"], correct:1, explain:"Óxidos de não-metais como o CO₂ reagem com a água formando ácidos fracos (neste caso, ácido carbónico)."},
+          {type:"mcq", q:"A ferrugem que se forma no ferro exposto ao ar húmido é, quimicamente, um:", options:["Sal neutro","Óxido de ferro","Metal puro","Gás nobre"], correct:1, explain:"A ferrugem é essencialmente óxido de ferro hidratado, formado pela reação do ferro com oxigénio e água."}
+        ]},
+        { id:"m13", title:"Sais: Formação e Exemplos", questions:[
+          {type:"mcq", q:"Um sal é geralmente formado pela reação de neutralização entre:", options:["Um ácido e uma base","Dois ácidos","Dois metais","Um gás e um líquido"], correct:0, explain:"Numa reação de neutralização, ácido + base produzem sal + água — por exemplo, ácido clorídrico + hidróxido de sódio dão cloreto de sódio + água."},
+          {type:"mcq", q:"O sal de cozinha (NaCl) pode resultar teoricamente da reação entre:", options:["Água e oxigénio","Ácido clorídrico e hidróxido de sódio","Carbono e hidrogénio","Dois metais"], correct:1, explain:"HCl (ácido clorídrico) + NaOH (hidróxido de sódio) → NaCl (sal) + H₂O (água) — uma reação clássica de neutralização."},
+          {type:"mcq", q:"Além do NaCl, qual destes compostos é também classificado como um sal?", options:["Água (H₂O)","Carbonato de cálcio (CaCO₃)","Oxigénio (O₂)","Etanol"], correct:1, explain:"O carbonato de cálcio, presente no calcário e no giz, é um sal — resultado da combinação de um catião metálico com um anião."}
+        ]},
+        { id:"m14", title:"Eletronegatividade e Polaridade", questions:[
+          {type:"mcq", q:"Eletronegatividade é a tendência de um átomo para:", options:["Perder sempre eletrões","Atrair eletrões numa ligação química","Emitir radiação","Aumentar de tamanho"], correct:1, explain:"A eletronegatividade mede a capacidade de um átomo atrair para si os eletrões partilhados numa ligação química."},
+          {type:"mcq", q:"Uma ligação entre dois átomos com eletronegatividades muito diferentes tende a ser:", options:["Covalente apolar","Iónica","Metálica pura","Nuclear"], correct:1, explain:"Quanto maior a diferença de eletronegatividade, mais a ligação tende a ser iónica, com transferência (não só partilha) de eletrões."},
+          {type:"mcq", q:"Uma molécula com distribuição desigual de carga elétrica, como a água, diz-se:", options:["Apolar","Polar","Neutra sempre","Radioativa"], correct:1, explain:"A molécula de água é polar: o oxigénio atrai mais os eletrões, criando um lado ligeiramente negativo e outro ligeiramente positivo."}
+        ]},
+        { id:"m15", title:"Química dos Sabões e Detergentes", questions:[
+          {type:"mcq", q:"As moléculas de sabão têm uma parte que gosta de água (hidrofílica) e outra que:", options:["Também gosta de água","Foge da água (hidrofóbica)","É radioativa","Não existe"], correct:1, explain:"O sabão tem uma 'cauda' hidrofóbica (foge da água, liga-se a gorduras) e uma 'cabeça' hidrofílica (gosta de água) — por isso limpa gordura."},
+          {type:"mcq", q:"A parte hidrofóbica das moléculas de sabão liga-se principalmente a:", options:["Sal","Gorduras e óleos","Ar","Vidro"], correct:1, explain:"É essa parte que se agarra à gordura e sujidade, permitindo que a água depois as arraste, ao enxaguar."},
+          {type:"mcq", q:"O processo químico que produz sabão a partir de gordura e uma base forte (como hidróxido de sódio) chama-se:", options:["Saponificação","Sublimação","Eletrólise","Destilação"], correct:0, explain:"A saponificação é a reação entre uma gordura (éster) e uma base forte, que produz sabão e glicerina."}
         ]}
       ]
     },
@@ -701,27 +858,82 @@
         { id:"a1", title:"Equilíbrio de Equações", questions:[
           {type:"fill", q:"Equilibra: __H₂ + O₂ → __H₂O (escreve só o coeficiente que falta antes do H₂ dos reagentes)", accept:["2"], explain:"A equação equilibrada é 2H₂ + O₂ → 2H₂O: assim há 4 átomos de H e 2 de O em cada lado."},
           {type:"mcq", q:"Numa equação química, os números grandes à frente das fórmulas chamam-se:", options:["Índices","Coeficientes estequiométricos","Expoentes","Isótopos"], correct:1, explain:"Os coeficientes estequiométricos indicam quantas moléculas ou moles de cada substância participam na reação."},
-          {type:"mcq", q:"Qual lei justifica a necessidade de equilibrar equações químicas?", options:["Lei de Avogadro","Lei da Conservação da Massa","Lei dos Gases Ideais","Lei de Ohm"], correct:1, explain:"A Lei da Conservação da Massa (Lavoisier) diz que a massa total dos reagentes é igual à massa total dos produtos."}
+          {type:"mcq", q:"Qual lei justifica a necessidade de equilibrar equações químicas?", options:["Lei de Avogadro","Lei da Conservação da Massa","Lei dos Gases Ideais","Lei de Ohm"], correct:1, explain:"A Lei da Conservação da Massa (Lavoisier) diz que a massa total dos reagentes é igual à massa total dos produtos."},
+          {type:"fill", q:"Na equação equilibrada N₂ + 3H₂ → 2NH₃, quantos átomos de hidrogénio há do lado dos produtos? (número)", accept:["6"], explain:"2NH₃ tem 2×3 = 6 átomos de hidrogénio — o mesmo número que 3H₂ (3×2=6) do lado dos reagentes."}
         ]},
         { id:"a2", title:"Estequiometria", questions:[
           {type:"mcq", q:"A estequiometria estuda principalmente:", options:["A velocidade das reações","As proporções entre reagentes e produtos","A cor das substâncias","A condutividade elétrica"], correct:1, explain:"A estequiometria calcula as quantidades (em massa, mol ou volume) de reagentes e produtos numa reação."},
           {type:"mcq", q:"Numa reação, o reagente que se esgota primeiro e limita a quantidade de produto formado chama-se:", options:["Reagente em excesso","Reagente limitante","Catalisador","Produto secundário"], correct:1, explain:"O reagente limitante é consumido primeiro, determinando a quantidade máxima de produto que se pode formar."},
-          {type:"fill", q:"Se 2 mol de H₂ reagem completamente com O₂ segundo 2H₂+O₂→2H₂O, quantos mol de H₂O se formam? (número)", accept:["2"], explain:"Pela proporção 2:2, 2 mol de H₂ produzem 2 mol de H₂O."}
+          {type:"fill", q:"Se 2 mol de H₂ reagem completamente com O₂ segundo 2H₂+O₂→2H₂O, quantos mol de H₂O se formam? (número)", accept:["2"], explain:"Pela proporção 2:2, 2 mol de H₂ produzem 2 mol de H₂O."},
+          {type:"mcq", q:"A unidade padrão usada nos cálculos estequiométricos para 'quantidade de substância' é:", options:["Grama","Litro","Mol","Newton"], correct:2, explain:"O mol é a ponte entre massa, número de partículas e volume nos cálculos estequiométricos."}
         ]},
         { id:"a3", title:"Termoquímica", questions:[
           {type:"mcq", q:"A variação de entalpia (ΔH) negativa indica uma reação:", options:["Endotérmica","Exotérmica","Sem energia","Instantânea"], correct:1, explain:"ΔH negativo significa que o sistema perde energia para o ambiente — reação exotérmica."},
           {type:"mcq", q:"Um processo que absorve calor do ambiente chama-se:", options:["Exotérmico","Isotérmico","Endotérmico","Adiabático"], correct:2, explain:"Processos endotérmicos absorvem energia do ambiente, por isso o ambiente ao redor esfria."},
-          {type:"mcq", q:"A unidade padrão de energia usada em termoquímica é:", options:["Watt","Joule","Newton","Pascal"], correct:1, explain:"O Joule (J) é a unidade de energia no Sistema Internacional, usada para medir calor e trabalho."}
+          {type:"mcq", q:"A unidade padrão de energia usada em termoquímica é:", options:["Watt","Joule","Newton","Pascal"], correct:1, explain:"O Joule (J) é a unidade de energia no Sistema Internacional, usada para medir calor e trabalho."},
+          {type:"mcq", q:"A queima de combustíveis (como o gás natural) é, na generalidade, uma reação:", options:["Endotérmica","Exotérmica","Sem troca de energia","Nuclear"], correct:1, explain:"Reações de combustão libertam energia na forma de calor e luz — são exotérmicas."}
         ]},
         { id:"a4", title:"Eletroquímica", questions:[
           {type:"mcq", q:"Numa pilha eletroquímica, o elétrodo onde ocorre oxidação chama-se:", options:["Cátodo","Ânodo","Eletrólito","Condutor neutro"], correct:1, explain:"No ânodo ocorre oxidação (perda de eletrões); no cátodo ocorre redução (ganho de eletrões)."},
           {type:"mcq", q:"A corrosão do ferro (formação de ferrugem) é um exemplo de reação de:", options:["Oxidação-redução","Neutralização ácido-base","Fusão nuclear","Sublimação"], correct:0, explain:"A ferrugem forma-se quando o ferro se oxida na presença de oxigénio e água — uma reação redox."},
-          {type:"mcq", q:"Numa eletrólise, a energia elétrica é usada para:", options:["Impedir reações químicas","Provocar uma reação química não espontânea","Medir temperatura","Aumentar a massa das substâncias"], correct:1, explain:"Na eletrólise, a corrente elétrica fornece energia para forçar reações que não ocorreriam sozinhas."}
+          {type:"mcq", q:"Numa eletrólise, a energia elétrica é usada para:", options:["Impedir reações químicas","Provocar uma reação química não espontânea","Medir temperatura","Aumentar a massa das substâncias"], correct:1, explain:"Na eletrólise, a corrente elétrica fornece energia para forçar reações que não ocorreriam sozinhas."},
+          {type:"mcq", q:"Numa pilha eletroquímica, os eletrões fluem pelo circuito externo do:", options:["Cátodo para o ânodo","Ânodo para o cátodo","Eletrólito para o cátodo","Cátodo para o eletrólito"], correct:1, explain:"Os eletrões saem do ânodo (onde há oxidação) e viajam pelo circuito externo até ao cátodo (onde há redução)."}
         ]},
         { id:"a5", title:"Química Orgânica Básica", questions:[
           {type:"mcq", q:"O elemento central presente em todos os compostos orgânicos é:", options:["Oxigénio","Carbono","Azoto","Enxofre"], correct:1, explain:"A Química Orgânica estuda os compostos que contêm carbono, geralmente ligado a hidrogénio."},
           {type:"fill", q:"Escreve a fórmula química do metano, o hidrocarboneto mais simples.", accept:["ch4"], explain:"O metano é CH₄: um carbono ligado a quatro hidrogénios."},
-          {type:"mcq", q:"Os hidrocarbonetos são compostos formados apenas por:", options:["Carbono e oxigénio","Carbono e hidrogénio","Carbono e azoto","Hidrogénio e oxigénio"], correct:1, explain:"Hidrocarbonetos contêm apenas átomos de carbono e hidrogénio — como o metano e o etano."}
+          {type:"mcq", q:"Os hidrocarbonetos são compostos formados apenas por:", options:["Carbono e oxigénio","Carbono e hidrogénio","Carbono e azoto","Hidrogénio e oxigénio"], correct:1, explain:"Hidrocarbonetos contêm apenas átomos de carbono e hidrogénio — como o metano e o etano."},
+          {type:"mcq", q:"Compostos orgânicos formados só por ligações simples entre carbonos chamam-se:", options:["Alcanos","Alcenos","Alcinos","Aromáticos"], correct:0, explain:"Alcanos são hidrocarbonetos saturados, com apenas ligações simples C-C — como o metano e o etano."}
+        ]},
+        { id:"a6", title:"Cinética Química", questions:[
+          {type:"mcq", q:"A cinética química estuda principalmente:", options:["A cor das reações","A velocidade e os mecanismos das reações","A massa dos átomos","A carga dos iões"], correct:1, explain:"A cinética química analisa a rapidez com que as reações ocorrem e os fatores que a influenciam."},
+          {type:"mcq", q:"A energia mínima que as partículas precisam para reagir chama-se:", options:["Energia de ativação","Energia potencial","Energia nuclear","Energia livre"], correct:0, explain:"A energia de ativação é a 'barreira' de energia que os reagentes têm de ultrapassar para que a reação ocorra."},
+          {type:"mcq", q:"Aumentar a concentração dos reagentes, geralmente, faz a velocidade da reação:", options:["Diminuir","Aumentar","Ficar igual","Ser negativa"], correct:1, explain:"Mais partículas de reagente no mesmo espaço significa mais colisões por segundo, acelerando a reação."}
+        ]},
+        { id:"a7", title:"Equilíbrio Químico", questions:[
+          {type:"mcq", q:"Numa reação em equilíbrio químico dinâmico:", options:["A reação parou completamente","As reações direta e inversa ocorrem à mesma velocidade","Só a reação direta ocorre","Não há mais reagentes"], correct:1, explain:"No equilíbrio dinâmico, reagentes formam produtos e produtos voltam a formar reagentes à mesma velocidade — por isso as concentrações parecem constantes."},
+          {type:"mcq", q:"Segundo o Princípio de Le Chatelier, se aumentarmos a pressão sobre um sistema gasoso em equilíbrio, este desloca-se para o lado com:", options:["Mais moléculas de gás","Menos moléculas de gás","Não se desloca","Só depende da temperatura"], correct:1, explain:"Aumentar a pressão desloca o equilíbrio para o lado com menor número de moléculas gasosas, para 'aliviar' essa pressão."},
+          {type:"mcq", q:"Adicionar mais reagente a um sistema em equilíbrio desloca o equilíbrio no sentido de:", options:["Formar mais produtos","Formar mais reagentes","Não altera nada","Parar a reação"], correct:0, explain:"Pelo Princípio de Le Chatelier, o sistema reage ao excesso de reagente formando mais produtos, para restabelecer o equilíbrio."}
+        ]},
+        { id:"a8", title:"Polímeros", questions:[
+          {type:"mcq", q:"Um polímero é uma molécula grande formada pela repetição de unidades menores chamadas:", options:["Isótopos","Monómeros","Catalisadores","Iões"], correct:1, explain:"Polímeros são cadeias longas formadas pela ligação repetida de unidades mais pequenas, os monómeros — como o plástico PET, feito de muitos monómeros ligados."},
+          {type:"mcq", q:"Qual destes é um exemplo de polímero natural?", options:["Poliestireno","Celulose","PVC","Nylon"], correct:1, explain:"A celulose, presente nas paredes das células vegetais, é um polímero natural feito de unidades de glicose repetidas."},
+          {type:"mcq", q:"Uma das grandes desvantagens ambientais de muitos plásticos sintéticos é:", options:["Serem demasiado baratos","A lenta degradação na natureza","Não poderem ser moldados","Serem sempre transparentes"], correct:1, explain:"Muitos plásticos sintéticos são muito resistentes e demoram centenas de anos a degradar-se no ambiente."}
+        ]},
+        { id:"a9", title:"Radioatividade", questions:[
+          {type:"mcq", q:"A radioatividade é a emissão espontânea de radiação a partir de núcleos:", options:["Estáveis","Instáveis","Sem protões","Sem massa"], correct:1, explain:"Núcleos atómicos instáveis libertam energia na forma de radiação para se tornarem mais estáveis — é isso a radioatividade."},
+          {type:"mcq", q:"O tempo necessário para metade dos átomos de uma amostra radioativa se desintegrar chama-se:", options:["Meia-vida","Tempo crítico","Período de ativação","Tempo de reação"], correct:0, explain:"A meia-vida (t½) é o tempo que leva para metade dos núcleos radioativos de uma amostra se desintegrarem."},
+          {type:"mcq", q:"Um exemplo de aplicação útil e controlada da radioatividade é:", options:["Diagnóstico e tratamento médico (ex: radioterapia)","Apenas armas nucleares","Não tem nenhuma aplicação útil","Só serve para poluir"], correct:0, explain:"A radioatividade tem aplicações importantes em medicina (diagnóstico por imagem, radioterapia), datação de fósseis e geração de energia."}
+        ]},
+        { id:"a10", title:"Química Industrial em Angola", questions:[
+          {type:"mcq", q:"O petróleo bruto é separado nas suas diferentes frações (gasolina, gasóleo, etc.) principalmente através de um processo de:", options:["Destilação fracionada","Filtração simples","Eletrólise","Cristalização"], correct:0, explain:"A destilação fracionada separa os componentes do petróleo bruto de acordo com os seus diferentes pontos de ebulição — é o processo central numa refinaria."},
+          {type:"mcq", q:"A indústria petroquímica transforma derivados do petróleo e do gás natural principalmente em:", options:["Apenas combustíveis","Plásticos, fertilizantes, solventes e outros produtos","Só produtos alimentares","Apenas metais"], correct:1, explain:"Além de combustíveis, a petroquímica produz plásticos, fertilizantes, solventes, borrachas sintéticas e muitos outros materiais do dia a dia."},
+          {type:"mcq", q:"Angola é membro de qual organização internacional de países produtores de petróleo?", options:["OMC","OPEP","NATO","União Europeia"], correct:1, explain:"Angola é membro da OPEP (Organização dos Países Exportadores de Petróleo), um dos maiores produtores de petróleo de África."}
+        ]},
+        { id:"a11", title:"Isomeria em Química Orgânica", questions:[
+          {type:"mcq", q:"Compostos com a mesma fórmula molecular mas estrutura (arranjo dos átomos) diferente chamam-se:", options:["Isótopos","Isómeros","Catalisadores","Polímeros"], correct:1, explain:"Isómeros têm a mesma fórmula química, mas os átomos estão ligados de forma diferente, resultando em propriedades diferentes."},
+          {type:"mcq", q:"Dois isómeros podem ter propriedades físicas e químicas:", options:["Sempre idênticas","Diferentes entre si","Impossíveis de medir","Só iguais se forem gases"], correct:1, explain:"Apesar de terem a mesma fórmula molecular, isómeros podem ter pontos de fusão, cheiros e reatividades muito diferentes."},
+          {type:"mcq", q:"A isomeria é um fenómeno especialmente comum e relevante em:", options:["Química nuclear","Química orgânica","Química analítica das águas","Cristalografia de metais"], correct:1, explain:"Devido à versatilidade do carbono em formar cadeias e ramificações, a isomeria é extremamente comum em compostos orgânicos."}
+        ]},
+        { id:"a12", title:"Grupos Funcionais Orgânicos", questions:[
+          {type:"mcq", q:"O grupo funcional -OH (hidroxilo) caracteriza a classe dos:", options:["Ácidos carboxílicos","Álcoois","Aldeídos","Ésteres"], correct:1, explain:"Álcoois, como o etanol, têm um grupo hidroxilo (-OH) ligado a uma cadeia de carbono."},
+          {type:"mcq", q:"O grupo funcional -COOH caracteriza a classe dos:", options:["Álcoois","Ácidos carboxílicos","Cetonas","Aminas"], correct:1, explain:"Ácidos carboxílicos, como o ácido acético do vinagre, têm o grupo funcional -COOH."},
+          {type:"mcq", q:"Compostos que têm um grupo carbonilo (C=O) ligado a dois átomos de carbono chamam-se:", options:["Cetonas","Ácidos","Aminas","Alcanos"], correct:0, explain:"As cetonas têm o grupo C=O situado entre duas cadeias de carbono, diferente dos aldeídos onde está na ponta da cadeia."}
+        ]},
+        { id:"a13", title:"pH e pOH: Cálculos", questions:[
+          {type:"fill", q:"A soma de pH + pOH, em água a 25°C, é aproximadamente igual a quanto? (número)", accept:["14"], explain:"Em água a 25°C, pH + pOH = 14, uma relação constante muito usada em cálculos de ácidos e bases."},
+          {type:"fill", q:"Se o pH de uma solução é 4, qual é o pOH dessa solução? (número)", accept:["10"], explain:"Como pH + pOH = 14, se pH = 4, então pOH = 14 − 4 = 10."},
+          {type:"mcq", q:"Quanto menor o valor do pH de uma solução ácida, mais:", options:["Concentrada em iões H⁺ (mais ácida)","Diluída em iões H⁺","Básica se torna","Neutra fica"], correct:0, explain:"A escala de pH é inversa: valores mais baixos correspondem a maior concentração de iões H⁺, ou seja, soluções mais ácidas."}
+        ]},
+        { id:"a14", title:"Leis dos Gases", questions:[
+          {type:"mcq", q:"A Lei de Boyle relaciona, a temperatura constante, a pressão e o volume de um gás de forma:", options:["Diretamente proporcional","Inversamente proporcional","Sem qualquer relação","Só em sólidos"], correct:1, explain:"Pela Lei de Boyle, a pressão e o volume de um gás são inversamente proporcionais à temperatura constante: se um aumenta, o outro diminui."},
+          {type:"mcq", q:"A Lei de Charles relaciona, a pressão constante, o volume e a temperatura de um gás de forma:", options:["Diretamente proporcional","Inversamente proporcional","Aleatória","Nula"], correct:0, explain:"Pela Lei de Charles, a volume constante ou pressão constante, o volume de um gás aumenta proporcionalmente com a temperatura."},
+          {type:"mcq", q:"Segundo a Lei de Boyle, se o volume de um gás diminui (a temperatura constante), a sua pressão:", options:["Diminui também","Aumenta","Mantém-se igual","Torna-se negativa"], correct:1, explain:"Menos espaço para as mesmas partículas de gás significa mais colisões nas paredes por segundo — a pressão sobe."}
+        ]},
+        { id:"a15", title:"Química Verde e Sustentabilidade", questions:[
+          {type:"mcq", q:"A Química Verde tem como objetivo principal:", options:["Produzir mais lucro a qualquer custo","Reduzir o impacto ambiental dos processos químicos","Usar sempre mais água","Eliminar toda a indústria química"], correct:1, explain:"A Química Verde procura desenhar produtos e processos químicos que reduzam ou eliminem o uso e a geração de substâncias perigosas."},
+          {type:"mcq", q:"Um dos princípios da Química Verde é preferir processos que produzam:", options:["Mais resíduos e mais energia","Menos resíduos e menos consumo de energia","Mais lucro sem critérios","Produtos sempre mais caros"], correct:1, explain:"Minimizar resíduos e poupar energia são dois dos princípios centrais da Química Verde, tornando os processos mais sustentáveis."},
+          {type:"mcq", q:"Usar catalisadores para tornar uma reação industrial mais eficiente, com menos resíduos, é um exemplo de:", options:["Química nuclear","Química verde aplicada","Alquimia","Química descartável"], correct:1, explain:"Catalisadores reduzem a energia necessária e aumentam a eficiência das reações, gerando menos desperdício — um princípio central da Química Verde."}
         ]}
       ]
     }
@@ -760,6 +972,26 @@
       materials:"Algumas folhas de repolho roxo, água quente, um coador e 2-3 copos com líquidos diferentes (vinagre, água com sabão, água simples).",
       steps:"1. Corta o repolho roxo em pedaços e cobre com água quente.<br>2. Deixa arrefecer e coa, guardando o líquido roxo — este é o indicador.<br>3. Deita algumas gotas do indicador em cada copo com um líquido diferente e observa a cor.",
       result:"O indicador de repolho roxo muda de cor consoante o pH: fica rosa/vermelho em ácidos (vinagre), roxo/azul em substâncias neutras e verde/amarelo em bases (água com sabão) — graças a um pigmento chamado antocianina."
+    },
+    { id:"cristais", emoji:"💎", title:"Cristais de Sal", sub:"Cristalização por evaporação",
+      materials:"Sal de cozinha, água quente, um copo, um cordel ou palito, e alguns dias de paciência.",
+      steps:"1. Dissolve sal em água quente até não se dissolver mais (solução saturada).<br>2. Deita a solução num copo raso e pendura o cordel dentro dela, sem tocar no fundo.<br>3. Deixa o copo num sítio calmo, sem tapar, durante vários dias.",
+      result:"À medida que a água evapora, o sal que estava dissolvido já não cabe na solução e começa a formar cristais sólidos e organizados no cordel — um exemplo visível do processo de cristalização."
+    },
+    { id:"balao", emoji:"🎈", title:"Balão Elétrico", sub:"Eletricidade estática",
+      materials:"Um balão cheio de ar e cabelo seco (o teu ou de outra pessoa) ou um pedaço de lã.",
+      steps:"1. Esfrega o balão com força no cabelo seco ou num pedaço de lã, durante uns 15 segundos.<br>2. Aproxima o balão de pequenos pedaços de papel ou de um fio fino de água a correr da torneira.<br>3. Observa o que acontece, sem tocar.",
+      result:"Esfregar o balão transfere eletrões para a sua superfície, carregando-o eletricamente. Essa carga atrai objetos leves e neutros, como o papel, e consegue até curvar ligeiramente um fio de água — eletricidade estática em ação."
+    },
+    { id:"leite", emoji:"🥛", title:"Leite Psicadélico", sub:"Tensão superficial e sabão",
+      materials:"Leite gordo (integral), corantes alimentares de várias cores, um pouco de detergente da loiça e um cotonete.",
+      steps:"1. Deita leite num prato raso, cobrindo o fundo.<br>2. Pinga algumas gotas de corantes diferentes por cima, sem mexer.<br>3. Molha a ponta de um cotonete em detergente e toca suavemente no centro do prato.",
+      result:"O detergente quebra a tensão superficial do leite e reage com a sua gordura, criando correntes que empurram o corante em padrões coloridos e dinâmicos — um efeito visual bonito, causado por química real."
+    },
+    { id:"vela", emoji:"🕯️", title:"Extintor Caseiro de Bicarbonato", sub:"CO₂ mais denso que o ar",
+      materials:"Uma vela pequena (acesa por um adulto), bicarbonato de sódio, vinagre e um copo alto.",
+      steps:"1. Pede a um adulto para acender a vela num sítio seguro.<br>2. No copo, mistura 3 colheres de bicarbonato com um pouco de vinagre — vai borbulhar.<br>3. Sem deitar o líquido, inclina o copo com cuidado sobre a chama, como se estivesses a 'despejar' o gás.",
+      result:"A reação liberta dióxido de carbono (CO₂), um gás mais denso que o ar. Ao inclinares o copo, o CO₂ 'escorre' sobre a chama e desloca o oxigénio necessário à combustão — apagando a vela sem tocar nela, como um extintor em miniatura."
     }
   ];
 
@@ -781,9 +1013,9 @@
 
   var ACHIEVEMENTS = [
     {id:"first_phase", icon:"🥇", name:"Primeira Fase", desc:"Completa a tua primeira fase.", check:function(s){return s.completedPhases.length>=1;}},
-    {id:"basico_done", icon:"🌱", name:"Cientista Júnior", desc:"Conclui todo o nível Básico.", check:function(s){return countDoneInLevel(s,"basico")===5;}},
-    {id:"medio_done", icon:"⚗️", name:"Químico em Formação", desc:"Conclui todo o nível Médio.", check:function(s){return countDoneInLevel(s,"medio")===5;}},
-    {id:"avancado_done", icon:"🏅", name:"Mestre da Química", desc:"Conclui todo o nível Avançado.", check:function(s){return countDoneInLevel(s,"avancado")===5;}},
+    {id:"basico_done", icon:"🌱", name:"Cientista Júnior", desc:"Conclui todo o nível Básico.", check:function(s){return countDoneInLevel(s,"basico")===levelPhaseCount("basico");}},
+    {id:"medio_done", icon:"⚗️", name:"Químico em Formação", desc:"Conclui todo o nível Médio.", check:function(s){return countDoneInLevel(s,"medio")===levelPhaseCount("medio");}},
+    {id:"avancado_done", icon:"🏅", name:"Mestre da Química", desc:"Conclui todo o nível Avançado.", check:function(s){return countDoneInLevel(s,"avancado")===levelPhaseCount("avancado");}},
     {id:"streak3", icon:"🔥", name:"Sequência de Fogo", desc:"3 dias seguidos a jogar.", check:function(s){return s.streak>=3;}},
     {id:"formulas5", icon:"🧮", name:"Mestre das Fórmulas", desc:"Acerta 5 perguntas de escrita.", check:function(s){return s.fillCorrectCount>=5;}},
     {id:"lab1", icon:"🔬", name:"Explorador do Lab", desc:"Executa a tua primeira experiência.", check:function(s){return s.labDone.length>=1;}},
@@ -796,6 +1028,10 @@
     lvl.phases.forEach(function(p){ if(state.completedPhases.indexOf(p.id)!==-1) n++; });
     return n;
   }
+  function levelPhaseCount(levelId){
+    var lvl = LEVELS.filter(function(l){return l.id===levelId;})[0];
+    return lvl.phases.length;
+  }
 
   /* ============ STATE ============ */
   var STORAGE_KEY = "silvioResponde_v1";
@@ -806,7 +1042,8 @@
       xp:0, score:0, streak:0, lastVisit:null,
       completedPhases:[], unlockedPhases:["b1"],
       fillCorrectCount:0, labDone:[], achievements:[],
-      diplomaUnlocked:false, diplomaSeen:false
+      diplomaUnlocked:false, diplomaSeen:false,
+      soundOn:true, bestStreak:0, voiceOn:true
     };
   };
   var state = loadState();
@@ -825,11 +1062,153 @@
     try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
   }
 
+  /* ============ SOUND ============ */
+  var audioCtx = null;
+  function getAudioCtx(){
+    if(!audioCtx){
+      try{ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }catch(e){ audioCtx = null; }
+    }
+    return audioCtx;
+  }
+  function playTone(freq, dur, delay, type, vol){
+    if(!state.soundOn) return;
+    var ctx = getAudioCtx();
+    if(!ctx) return;
+    if(ctx.state==="suspended"){ try{ ctx.resume(); }catch(e){} }
+    try{
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.type = type || "sine";
+      osc.frequency.value = freq;
+      var t0 = ctx.currentTime + (delay||0);
+      gain.gain.setValueAtTime(0, t0);
+      gain.gain.linearRampToValueAtTime(vol||0.12, t0+0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, t0+dur);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(t0); osc.stop(t0+dur+0.02);
+    }catch(e){}
+  }
+  function sfxCorrect(){ playTone(523.25,.16,0,"sine"); playTone(783.99,.2,.09,"sine"); }
+  function sfxWrong(){ playTone(196,.28,0,"sawtooth",0.08); }
+  function sfxComplete(){ playTone(523.25,.14,0,"triangle"); playTone(659.25,.14,.12,"triangle"); playTone(783.99,.22,.24,"triangle"); }
+  function sfxAchievement(){ playTone(659.25,.12,0,"square",0.09); playTone(880,.12,.11,"square",0.09); playTone(1046.5,.28,.22,"square",0.09); }
+  function sfxTap(){ playTone(300,.06,0,"sine",0.05); }
+
+  var musicTimer = null, musicStep = 0;
+  var MUSIC_SCALE = [261.63,293.66,329.63,392.00,440.00,523.25,587.33];
+  function startMusic(){
+    if(!state.soundOn || musicTimer) return;
+    var ctx = getAudioCtx();
+    if(!ctx) return;
+    musicTimer = setInterval(function(){
+      if(!state.soundOn){ stopMusic(); return; }
+      var note = MUSIC_SCALE[Math.floor(Math.random()*MUSIC_SCALE.length)];
+      playTone(note, .55, 0, "sine", 0.028);
+      if(musicStep % 4 === 0) playTone(note/2, .6, 0, "triangle", 0.02);
+      musicStep++;
+    }, 560);
+  }
+  function stopMusic(){
+    if(musicTimer){ clearInterval(musicTimer); musicTimer = null; }
+  }
+
+  var CORRECT_TITLES = ["Resposta certa! 🎉","Boa! Acertaste em cheio!","Isso mesmo, cientista!","Exato! 🔬✨","Mandaste bem!","Aí está, campeão da Química!"];
+  var WRONG_TITLES = ["Quase! Vamos rever:","Não foi desta, mas aprendemos:","Ainda não é essa — repara:","Falhou por pouco! Olha:","Boa tentativa! A resposta certa era:"];
+  function pickRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+  function shuffleArray(arr){
+    for(var i=arr.length-1;i>0;i--){
+      var j = Math.floor(Math.random()*(i+1));
+      var t = arr[i]; arr[i]=arr[j]; arr[j]=t;
+    }
+    return arr;
+  }
+
+  /* ============ VOICE (Web Speech API) ============ */
+  var ptVoice = null;
+  function pickPtVoice(){
+    if(!("speechSynthesis" in window)) return;
+    var voices = window.speechSynthesis.getVoices();
+    ptVoice = voices.find(function(v){ return /^pt-pt/i.test(v.lang); })
+           || voices.find(function(v){ return /^pt/i.test(v.lang); })
+           || null;
+  }
+  if("speechSynthesis" in window){
+    pickPtVoice();
+    window.speechSynthesis.onvoiceschanged = pickPtVoice;
+  }
+  function speak(text){
+    if(!state.voiceOn) return;
+    if(!("speechSynthesis" in window)) return;
+    try{
+      window.speechSynthesis.cancel();
+      var utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "pt-PT";
+      utter.rate = 1.02;
+      utter.pitch = 1.12;
+      if(ptVoice) utter.voice = ptVoice;
+      window.speechSynthesis.speak(utter);
+    }catch(e){}
+  }
+  function stopSpeaking(){
+    if("speechSynthesis" in window){ try{ window.speechSynthesis.cancel(); }catch(e){} }
+  }
+  function updateVoiceIcon(){
+    document.getElementById("btn-voice-toggle").textContent = state.voiceOn ? "🗣️" : "🤐";
+  }
+  document.getElementById("btn-voice-toggle").addEventListener("click", function(){
+    state.voiceOn = !state.voiceOn;
+    saveState();
+    updateVoiceIcon();
+    if(!state.voiceOn) stopSpeaking();
+    else speak("Voz ligada!");
+  });
+  updateVoiceIcon();
+
+  function updateSoundIcon(){
+    document.getElementById("btn-sound-toggle").textContent = state.soundOn ? "🔊" : "🔇";
+  }
+  document.getElementById("btn-sound-toggle").addEventListener("click", function(){
+    state.soundOn = !state.soundOn;
+    saveState();
+    updateSoundIcon();
+    if(state.soundOn){
+      sfxTap();
+      var activeScreen = document.querySelector(".screen.active");
+      if(activeScreen && activeScreen.id!=="screen-onboarding") startMusic();
+    } else {
+      stopMusic();
+    }
+  });
+  updateSoundIcon();
+
+  function launchConfetti(){
+    var colors = ["#B4FF39","#3EC6FF","#FF8A3D","#FF5C77","#E9C46A"];
+    for(var i=0;i<36;i++){
+      (function(i){
+        setTimeout(function(){
+          var piece = document.createElement("div");
+          piece.className = "confetti-piece";
+          piece.style.left = (Math.random()*100)+"vw";
+          piece.style.background = colors[Math.floor(Math.random()*colors.length)];
+          piece.style.animationDuration = (2.2+Math.random()*1.4)+"s";
+          piece.style.borderRadius = Math.random()>0.5 ? "50%" : "2px";
+          document.body.appendChild(piece);
+          setTimeout(function(){ piece.remove(); }, 4000);
+        }, i*35);
+      })(i);
+    }
+  }
+
   /* ============ MASCOT RENDER ============ */
   function silvioInnerHTML(){
-    return '<div class="hair"></div>'+
-      '<div class="head"><div class="goggles"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div><div class="mouth"></div></div>'+
-      '<div class="coat"><div class="lapel left"></div><div class="lapel right"></div><div class="collar-line"></div></div>'+
+    return '<div class="coat"><div class="lapel left"></div><div class="lapel right"></div></div>'+
+      '<div class="head"></div>'+
+      '<div class="brow left"></div><div class="brow right"></div>'+
+      '<div class="eyes"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div>'+
+      '<div class="cap"></div>'+
+      '<div class="mask"><div class="pleat"></div><div class="pleat"></div><div class="pleat"></div><div class="strap left"></div><div class="strap right"></div></div>'+
+      '<div class="badge"></div>'+
       '<div class="silvio-flask"></div>';
   }
   document.querySelectorAll(".silvio").forEach(function(el){ el.innerHTML = silvioInnerHTML(); });
@@ -841,6 +1220,7 @@
     var showNav = (id==="screen-map"||id==="screen-lab"||id==="screen-profile");
     document.getElementById("bottom-nav").style.display = showNav ? "flex" : "none";
     if(showNav) setActiveNav(id);
+    if(id==="screen-onboarding"){ stopMusic(); } else { startMusic(); }
     window.scrollTo(0,0);
   }
   function setActiveNav(screenId){
@@ -883,6 +1263,7 @@
     showScreen("screen-diagnostic");
     renderDiagQuestion();
   }
+  var diagShuffleMap = [];
   function renderDiagQuestion(){
     diagLocked=false;
     var item = DIAGNOSTIC[diagIndex];
@@ -892,8 +1273,12 @@
     document.getElementById("diag-progress").style.width = (((diagIndex)/5)*100)+"%";
     var wrap = document.getElementById("diag-options");
     wrap.innerHTML = "";
+    var idxArr = shuffleArray(item.options.map(function(_,i){return i;}));
+    diagShuffleMap = idxArr;
+    var shuffledCorrect = idxArr.indexOf(item.correct);
     var letters = ["A","B","C","D"];
-    item.options.forEach(function(opt, i){
+    idxArr.forEach(function(origIdx, i){
+      var opt = item.options[origIdx];
       var el = document.createElement("button");
       el.className = "option";
       el.innerHTML = '<span class="letter">'+letters[i]+'</span><span>'+opt+'</span>';
@@ -901,11 +1286,12 @@
         if(diagLocked) return; diagLocked=true;
         var opts = wrap.querySelectorAll(".option");
         opts.forEach(function(o,idx){
-          if(idx===item.correct) o.classList.add("correct");
+          if(idx===shuffledCorrect) o.classList.add("correct");
           else if(o===el) o.classList.add("wrong");
         });
-        if(i===item.correct) diagScore++;
-        setSilvioMood("diag-silvio", i===item.correct);
+        if(i===shuffledCorrect) diagScore++;
+        if(i===shuffledCorrect) sfxCorrect(); else sfxWrong();
+        setSilvioMood("diag-silvio", i===shuffledCorrect);
         setTimeout(function(){
           diagIndex++;
           if(diagIndex<DIAGNOSTIC.length){ renderDiagQuestion(); }
@@ -937,9 +1323,11 @@
     };
     document.getElementById("res-text").textContent = msgs[state.recommendedLevel];
     showScreen("screen-diagnostic-result");
+    speak("Boa, "+state.name+"! "+msgs[state.recommendedLevel]);
   }
   document.getElementById("btn-go-map").addEventListener("click", function(){
     registerVisit();
+    currentTabLevel = computeSmartTab();
     renderMap();
     showScreen("screen-map");
     maybeShowCuriosity();
@@ -958,6 +1346,7 @@
       state.streak = 1;
     }
     state.lastVisit = today;
+    if(state.streak > state.bestStreak) state.bestStreak = state.streak;
     saveState();
     checkAchievements();
   }
@@ -968,13 +1357,25 @@
     var c = CURIOSITIES[Math.floor(Math.random()*CURIOSITIES.length)];
     document.getElementById("curiosity-text").textContent = state.name+", "+c;
     document.getElementById("modal-curiosity").classList.add("active");
+    speak(state.name+", "+c);
   }
   document.getElementById("btn-curiosity-ok").addEventListener("click", function(){
     document.getElementById("modal-curiosity").classList.remove("active");
+    stopSpeaking();
   });
 
   /* ============ MAP ============ */
   var currentTabLevel = "basico";
+  function computeSmartTab(){
+    for(var i=0;i<LEVELS.length;i++){
+      var lvl = LEVELS[i];
+      var hasOpen = lvl.phases.some(function(p){
+        return state.unlockedPhases.indexOf(p.id)!==-1 && state.completedPhases.indexOf(p.id)===-1;
+      });
+      if(hasOpen) return lvl.id;
+    }
+    return LEVELS[LEVELS.length-1].id;
+  }
   function renderMap(){
     document.getElementById("map-xp").textContent = state.xp;
     document.getElementById("map-streak").textContent = state.streak;
@@ -1032,6 +1433,7 @@
     renderPhaseQuestion();
   }
   document.getElementById("btn-exit-phase").addEventListener("click", function(){
+    stopSpeaking();
     renderMap(); showScreen("screen-map");
   });
   function renderPhaseQuestion(){
@@ -1054,7 +1456,10 @@
     if(q.type==="mcq"){
       fillWrap.style.display = "none";
       var letters=["A","B","C","D"];
-      q.options.forEach(function(opt,i){
+      var idxArr = shuffleArray(q.options.map(function(_,i){return i;}));
+      currentShuffledCorrect = idxArr.indexOf(q.correct);
+      idxArr.forEach(function(origIdx,i){
+        var opt = q.options[origIdx];
         var el = document.createElement("button");
         el.className="option";
         el.innerHTML = '<span class="letter">'+letters[i]+'</span><span>'+opt+'</span>';
@@ -1062,7 +1467,6 @@
           if(phaseAnswered) return;
           optWrap.querySelectorAll(".option").forEach(function(o){o.classList.remove("selected");});
           el.classList.add("selected");
-          el.dataset.chosen="1";
           selectedMcqIndex = i;
           document.getElementById("btn-phase-confirm").disabled = false;
         });
@@ -1075,16 +1479,16 @@
       };
     }
   }
-  var selectedMcqIndex = null;
+  var selectedMcqIndex = null, currentShuffledCorrect = null;
   document.getElementById("btn-phase-confirm").addEventListener("click", function(){
     if(phaseAnswered) return;
     var q = activePhase.questions[qIndex];
     var isCorrect;
     if(q.type==="mcq"){
-      isCorrect = selectedMcqIndex===q.correct;
+      isCorrect = selectedMcqIndex===currentShuffledCorrect;
       var opts = document.getElementById("phase-options").querySelectorAll(".option");
       opts.forEach(function(o,idx){
-        if(idx===q.correct) o.classList.add("correct");
+        if(idx===currentShuffledCorrect) o.classList.add("correct");
         else if(idx===selectedMcqIndex) o.classList.add("wrong");
       });
     } else {
@@ -1095,13 +1499,18 @@
     }
     phaseAnswered = true;
     if(isCorrect) phaseCorrect++;
+    if(isCorrect) sfxCorrect(); else sfxWrong();
     var fb = document.getElementById("phase-feedback");
     if(isCorrect){
-      fb.innerHTML = '<div class="feedback-panel ok"><div>🧑‍🔬</div><div><div class="feedback-title">Resposta correta!</div><div class="feedback-body">'+q.explain+'</div></div></div>';
+      var okTitle = pickRandom(CORRECT_TITLES);
+      fb.innerHTML = '<div class="feedback-panel ok"><div>🧑‍🔬</div><div><div class="feedback-title">'+okTitle+'</div><div class="feedback-body">'+q.explain+'</div></div></div>';
       state.xp += (q.type==="fill" ? 15 : 10);
       state.score += 10;
+      speak(okTitle+". "+q.explain);
     } else {
-      fb.innerHTML = '<div class="feedback-panel bad"><div>🧑‍🔬</div><div><div class="feedback-title">Quase! Resposta incorreta.</div><div class="feedback-body">'+q.explain+'</div><div class="summary-block">💡 Resumo rápido: '+q.explain+'</div></div></div>';
+      var wrongTitle = pickRandom(WRONG_TITLES);
+      fb.innerHTML = '<div class="feedback-panel bad"><div>🧑‍🔬</div><div><div class="feedback-title">'+wrongTitle+'</div><div class="feedback-body">'+q.explain+'</div><div class="summary-block">💡 Resumo rápido: '+q.explain+'</div></div></div>';
+      speak(wrongTitle+". "+q.explain);
     }
     saveState();
     document.getElementById("btn-phase-confirm").style.display = "none";
@@ -1141,6 +1550,7 @@
     document.getElementById("pc-xp").textContent = "+"+(xpGained + (passed?20:0));
     document.getElementById("pc-acc").textContent = Math.round((phaseCorrect/total)*100)+"%";
     showScreen("screen-phase-complete");
+    if(passed) sfxComplete();
     checkAchievements();
   }
   function unlockNextPhase(level, phase){
@@ -1163,6 +1573,9 @@
       saveState();
       renderDiploma();
       showScreen("screen-diploma");
+      launchConfetti();
+      sfxAchievement();
+      speak("Parabéns, "+state.name+"! Completaste toda a jornada de Química, do nível Básico ao Avançado. Estou muito orgulhoso de ti.");
       return;
     }
     renderMap(); showScreen("screen-map");
@@ -1230,6 +1643,7 @@
     document.getElementById("prof-streak").textContent = state.streak;
     var totalPhases = LEVELS.reduce(function(a,l){return a+l.phases.length;},0);
     document.getElementById("prof-phases").textContent = state.completedPhases.length+"/"+totalPhases;
+    document.getElementById("prof-beststreak").textContent = state.bestStreak;
 
     var areasWrap = document.getElementById("prof-areas");
     areasWrap.innerHTML = "";
@@ -1299,8 +1713,10 @@
   function processAchievementQueue(){
     if(achievementQueue.length===0) return;
     var a = achievementQueue.shift();
+    sfxAchievement();
     document.getElementById("achievement-text").textContent = a.icon+" "+a.name+" — "+a.desc;
     document.getElementById("modal-achievement").classList.add("active");
+    speak("Nova conquista! "+a.name+". "+a.desc);
   }
   document.getElementById("btn-achievement-ok").addEventListener("click", function(){
     document.getElementById("modal-achievement").classList.remove("active");
@@ -1311,6 +1727,7 @@
   function init(){
     if(state.name && state.diagnosticDone){
       registerVisit();
+      currentTabLevel = computeSmartTab();
       renderMap();
       showScreen("screen-map");
       maybeShowCuriosity();
