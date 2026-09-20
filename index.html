@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>Silvio Responde — Química em Jogo</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#12122B">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Silvio Responde">
+<link rel="icon" href="favicon-32.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#12122B;
+    --bg-deep:#0B0B1F;
+    --surface:#1E1E45;
+    --surface-2:#262658;
+    --line:#33336B;
+    --lime:#B4FF39;
+    --cyan:#3EC6FF;
+    --amber:#FF8A3D;
+    --pink:#FF5C77;
+    --text:#F3F3FF;
+    --text-dim:#A6A6D6;
+    --basico:#5CE68C;
+    --medio:#FFC93C;
+    --avancado:#FF5C77;
+    --skin:#9C6B47;
+    --skin-shade:#7A4F32;
+    --hair:#160F08;
+    --coat:#F4F6FB;
+    --coat-shade:#CDD3E2;
+    --gold:#E9C46A;
+    --radius-lg:26px;
+    --radius-md:18px;
+    --radius-sm:12px;
+  }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){
+      --bg:#12122B; --surface:#1E1E45; --text:#F3F3FF;
+    }
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    background:radial-gradient(circle at 50% -10%, #26265e 0%, var(--bg) 55%, var(--bg-deep) 100%);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{font-family:'Baloo 2',sans-serif;}
+  #app{
+    width:100%;
+    max-width:480px;
+    min-height:100vh;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent 200px);
+  }
+  .screen{
+    flex:1;
+    display:none;
+    flex-direction:column;
+    padding:20px 18px 100px;
+    animation:fadeIn .35s ease;
+    min-height:100vh;
+  }
+  .screen.active{display:flex;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+  button{font-family:inherit;cursor:pointer;border:none;}
+  input, select{font-family:inherit;}
+
+  .btn{
+    background:var(--lime);
+    color:#10241A;
+    font-weight:700;
+    font-size:16px;
+    padding:15px 20px;
+    border-radius:100px;
+    width:100%;
+    transition:transform .15s ease, box-shadow .15s ease;
+    box-shadow:0 6px 0 #7FBF1F;
+  }
+  .btn:active{transform:translateY(4px);box-shadow:0 2px 0 #7FBF1F;}
+  .btn.secondary{
+    background:transparent;
+    color:var(--text);
+    border:2px solid var(--line);
+    box-shadow:none;
+  }
+  .btn.secondary:active{transform:translateY(2px);}
+  .btn:disabled{opacity:.4;box-shadow:none;pointer-events:none;}
+  .btn-small{
+    padding:9px 16px;font-size:13px;border-radius:100px;font-weight:700;
+    background:var(--surface-2);color:var(--text);box-shadow:none;
+  }
+
+  /* ---- Mascot: Silvio, science boy in a lab coat ---- */
+  .silvio{position:relative;width:96px;height:96px;flex-shrink:0;overflow:visible;}
+  .silvio .coat{
+    position:absolute;left:50%;bottom:-14%;transform:translateX(-50%);
+    width:128%;height:46%;z-index:1;
+    background:linear-gradient(180deg, var(--coat), var(--coat-shade));
+    border-radius:38% 38% 6px 6px;
+    box-shadow:inset 0 5px 0 rgba(255,255,255,.5), 0 4px 0 rgba(0,0,0,.15);
+  }
+  .silvio .coat .lapel{
+    position:absolute;top:-2%;width:34%;height:60%;background:var(--coat-shade);
+    opacity:.9;
+  }
+  .silvio .coat .lapel.left{left:14%;clip-path:polygon(0 0,100% 0,40% 100%,0 60%);}
+  .silvio .coat .lapel.right{right:14%;clip-path:polygon(0 0,100% 0,100% 60%,60% 100%);}
+  .silvio .coat .collar-line{
+    position:absolute;left:50%;top:4%;transform:translateX(-50%);
+    width:14%;height:55%;background:var(--cyan);border-radius:2px;
+  }
+  .silvio .head{
+    width:82%;height:82%;border-radius:50%;
+    margin:0 auto;
+    background:linear-gradient(160deg, var(--skin), var(--skin-shade));
+    position:relative;z-index:2;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:inset 0 -8px 0 rgba(0,0,0,.15);
+    animation:bob 2.6s ease-in-out infinite;
+  }
+  .silvio .hair{
+    position:absolute;top:-14%;left:50%;transform:translateX(-50%);
+    width:98%;height:52%;background:var(--hair);
+    border-radius:50% 50% 40% 40%/62% 62% 30% 30%;
+    z-index:3;
+  }
+  .silvio .hair::after{
+    content:"";position:absolute;left:-6%;bottom:-6%;width:14%;height:34%;
+    background:var(--hair);border-radius:0 0 60% 60%;
+  }
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-6px) rotate(2deg);}}
+  .silvio .goggles{
+    position:absolute;top:38%;left:50%;transform:translate(-50%,0);
+    width:66%;height:26%;z-index:3;
+    display:flex;justify-content:space-between;
+  }
+  .silvio .eye{
+    width:38%;height:100%;border-radius:50%;
+    background:#0B0B1F;border:3px solid #EDEFF7;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .silvio .pupil{width:35%;height:35%;border-radius:50%;background:var(--cyan);}
+  .silvio .mouth{
+    position:absolute;bottom:16%;left:50%;transform:translateX(-50%);
+    width:32%;height:10%;border-radius:0 0 20px 20px;background:#3A231A;z-index:3;
+  }
+  .silvio.sad .mouth{border-radius:20px 20px 0 0;bottom:14%;background:#7a2233;}
+  .silvio.sad .pupil{background:var(--pink);}
+  .silvio.happy .mouth{height:14%;background:#3A231A;border-radius:0 0 30px 30px;}
+  .silvio-flask{
+    position:absolute;bottom:-6%;right:-8%;width:26%;height:30%;z-index:4;
+    background:rgba(62,198,255,.9);
+    clip-path:polygon(35% 0,65% 0,65% 35%,100% 100%,0 100%,35% 35%);
+    border-radius:0 0 8px 8px;
+  }
+
+  /* ---- Top bar / stat chips ---- */
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:18px;}
+  .chip{
+    display:flex;align-items:center;gap:6px;
+    background:var(--surface);
+    padding:7px 12px;border-radius:100px;
+    font-size:13px;font-weight:700;
+    border:1px solid var(--line);
+  }
+  .chip.xp{color:var(--lime);}
+  .chip.streak{color:var(--amber);}
+
+  /* ---- Onboarding ---- */
+  .onboard-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:18px;}
+  .field{width:100%;text-align:left;margin-bottom:14px;}
+  .field label{display:block;font-size:13px;color:var(--text-dim);margin-bottom:6px;font-weight:600;}
+  .field input, .field select{
+    width:100%;padding:14px 16px;border-radius:var(--radius-sm);
+    background:var(--surface);border:1px solid var(--line);color:var(--text);font-size:15px;
+  }
+  .field input:focus, .field select:focus{outline:2px solid var(--lime);}
+  .card{
+    background:var(--surface);
+    border-radius:var(--radius-lg);
+    padding:22px;
+    border:1px solid var(--line);
+  }
+
+  /* ---- Diagnostic ---- */
+  .progress-bar{height:8px;background:var(--surface-2);border-radius:100px;overflow:hidden;margin-bottom:18px;}
+  .progress-bar > div{height:100%;background:linear-gradient(90deg,var(--cyan),var(--lime));border-radius:100px;transition:width .3s ease;}
+
+  .option{
+    display:flex;align-items:center;gap:12px;
+    background:var(--surface);
+    border:2px solid var(--line);
+    border-radius:var(--radius-md);
+    padding:14px 16px;margin-bottom:10px;
+    font-size:15px;font-weight:600;
+    transition:border-color .15s ease, background .15s ease;
+    text-align:left;
+  }
+  .option:active{transform:scale(0.98);}
+  .option.selected{border-color:var(--cyan);background:#20335A;}
+  .option.correct{border-color:var(--lime);background:#1F3A22;}
+  .option.wrong{border-color:var(--pink);background:#3A1F28;}
+  .option .letter{
+    width:26px;height:26px;border-radius:50%;background:var(--surface-2);
+    display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;
+  }
+
+  /* ---- Map ---- */
+  .level-tabs{display:flex;gap:8px;margin-bottom:18px;}
+  .level-tab{
+    flex:1;padding:10px 6px;border-radius:var(--radius-sm);
+    background:var(--surface);border:2px solid transparent;
+    font-weight:700;font-size:13px;text-align:center;color:var(--text-dim);
+  }
+  .level-tab.active{border-color:var(--tab-color, var(--lime));color:var(--text);}
+  .level-tab .dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;}
+
+  .map-path{
+    position:relative;
+    padding:10px 0 30px;
+    display:flex;flex-direction:column;align-items:center;
+    gap:4px;
+  }
+  .phase-node-row{display:flex;width:100%;justify-content:center;position:relative;margin:6px 0;}
+  .phase-node{
+    width:64px;height:64px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Baloo 2';font-weight:700;font-size:20px;
+    background:var(--surface);border:3px solid var(--line);color:var(--text-dim);
+    position:relative;z-index:2;
+    box-shadow:0 6px 0 rgba(0,0,0,.25);
+  }
+  .phase-node.unlocked{background:var(--surface-2);border-color:var(--node-color,var(--lime));color:var(--text);box-shadow:0 6px 0 rgba(0,0,0,.25);}
+  .phase-node.done{background:var(--node-color,var(--lime));border-color:var(--node-color,var(--lime));color:#0B0B1F;}
+  .phase-node.locked{opacity:.55;}
+  .phase-node.current-anim{animation:pulseNode 1.1s ease infinite;}
+  @keyframes pulseNode{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+  .phase-node .lock{font-size:20px;}
+  .node-label{font-size:11px;color:var(--text-dim);text-align:center;max-width:90px;margin-top:4px;}
+
+  .silvio-marker{position:absolute;width:44px;height:44px;transition:left .5s ease, top .5s ease;z-index:5;pointer-events:none;}
+  .silvio-marker .head{width:100%;height:100%;}
+
+  /* ---- Challenge / Phase screen ---- */
+  .question-card{background:var(--surface);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px;border:1px solid var(--line);}
+  .question-meta{font-size:12px;color:var(--text-dim);font-weight:700;letter-spacing:.02em;margin-bottom:8px;}
+  .question-text{font-size:18px;font-weight:600;line-height:1.4;}
+  .fill-input{
+    width:100%;padding:16px;border-radius:var(--radius-md);
+    background:var(--surface-2);border:2px solid var(--line);
+    color:var(--text);font-size:18px;text-align:center;font-weight:700;margin-top:10px;
+  }
+  .fill-input:focus{outline:none;border-color:var(--cyan);}
+
+  .feedback-panel{
+    border-radius:var(--radius-lg);padding:18px;margin-top:14px;
+    display:flex;gap:12px;align-items:flex-start;
+  }
+  .feedback-panel.ok{background:#1B3320;border:1px solid #2E5A38;}
+  .feedback-panel.bad{background:#3A1F28;border:1px solid #5C2D3A;}
+  .feedback-title{font-weight:800;font-size:14px;margin-bottom:4px;}
+  .feedback-panel.ok .feedback-title{color:var(--lime);}
+  .feedback-panel.bad .feedback-title{color:var(--pink);}
+  .feedback-body{font-size:14px;color:var(--text-dim);line-height:1.45;}
+  .summary-block{
+    margin-top:10px;background:var(--bg-deep);border-radius:var(--radius-sm);
+    padding:10px 12px;font-size:13px;color:var(--cyan);font-weight:600;
+  }
+
+  /* ---- Bottom nav ---- */
+  .bottom-nav{
+    position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+    width:100%;max-width:480px;
+    background:rgba(18,18,43,.92);backdrop-filter:blur(10px);
+    border-top:1px solid var(--line);
+    display:flex;justify-content:space-around;padding:10px 8px calc(10px + env(safe-area-inset-bottom));
+    z-index:20;
+  }
+  .nav-btn{
+    background:transparent;display:flex;flex-direction:column;align-items:center;gap:3px;
+    color:var(--text-dim);font-size:11px;font-weight:700;padding:4px 14px;border-radius:12px;
+  }
+  .nav-btn.active{color:var(--lime);}
+  .nav-icon{font-size:20px;}
+
+  /* ---- Lab background (illustrated shelves, no external assets) ---- */
+  #screen-lab, #screen-lab-exp{position:relative;}
+  #screen-lab::before, #screen-lab-exp::before{
+    content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background-image:
+      linear-gradient(180deg, rgba(11,11,31,.82) 0%, rgba(15,15,38,.93) 55%, var(--bg-deep) 100%),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='170'><rect x='0' y='16' width='220' height='7' fill='%23383878'/><rect x='0' y='98' width='220' height='7' fill='%23383878'/><g fill='%232C2C64'><rect x='18' y='-6' width='22' height='28' rx='5'/><rect x='58' y='-10' width='16' height='32' rx='3'/><rect x='98' y='-2' width='26' height='24' rx='6'/><rect x='150' y='-8' width='18' height='30' rx='4'/><rect x='190' y='-4' width='18' height='26' rx='4'/><rect x='18' y='76' width='22' height='28' rx='5'/><rect x='66' y='72' width='24' height='32' rx='6'/><rect x='118' y='78' width='16' height='26' rx='3'/><rect x='160' y='74' width='20' height='30' rx='4'/></g></svg>");
+    background-repeat:no-repeat, repeat;
+    background-size:cover, 220px 170px;
+  }
+
+  /* ---- Lab ---- */
+  .exp-card{
+    background:var(--surface);border-radius:var(--radius-lg);padding:16px;margin-bottom:14px;
+    border:1px solid var(--line);display:flex;gap:14px;align-items:center;
+  }
+  .exp-emoji{font-size:34px;width:54px;height:54px;background:var(--surface-2);border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .exp-title{font-weight:700;font-size:15px;}
+  .exp-sub{font-size:12px;color:var(--text-dim);margin-top:2px;}
+  .exp-done-badge{margin-left:auto;color:var(--lime);font-size:18px;}
+
+  .beaker{
+    width:120px;height:140px;margin:20px auto;position:relative;
+  }
+  .beaker .glass{
+    position:absolute;bottom:0;left:10%;width:80%;height:85%;
+    border:4px solid #6E6EA8;border-top:none;border-radius:0 0 14px 14px;
+    overflow:hidden;background:rgba(255,255,255,.03);
+  }
+  .beaker .liquid{position:absolute;bottom:0;left:0;width:100%;height:35%;background:var(--cyan);transition:height .6s ease, background .6s ease;}
+  .beaker.reacting .liquid{height:70%;background:var(--lime);}
+  .bubble{position:absolute;bottom:10%;width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.7);opacity:0;}
+  .beaker.reacting .bubble{animation:rise 1.4s ease-in infinite;}
+  .bubble:nth-child(1){left:20%;animation-delay:0s;}
+  .bubble:nth-child(2){left:50%;animation-delay:.3s;}
+  .bubble:nth-child(3){left:75%;animation-delay:.6s;}
+  @keyframes rise{0%{opacity:0;transform:translateY(0);}20%{opacity:1;}100%{opacity:0;transform:translateY(-110px);}}
+
+  /* ---- Profile ---- */
+  .profile-header{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:20px;text-align:center;}
+  .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+  .stat-box{background:var(--surface);border-radius:var(--radius-md);padding:14px;border:1px solid var(--line);}
+  .stat-num{font-family:'Baloo 2';font-size:24px;font-weight:700;}
+  .stat-label{font-size:11px;color:var(--text-dim);font-weight:600;text-transform:uppercase;letter-spacing:.03em;}
+  .area-row{margin-bottom:12px;}
+  .area-row-top{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:6px;}
+  .area-bar{height:8px;background:var(--surface-2);border-radius:100px;overflow:hidden;}
+  .area-bar > div{height:100%;border-radius:100px;}
+  .badge-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
+  .badge{
+    background:var(--surface-2);border:1px solid var(--line);border-radius:100px;
+    padding:7px 12px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px;
+  }
+  .badge.locked{opacity:.35;}
+
+  /* ---- Diploma ---- */
+  .diploma-card{
+    background:linear-gradient(180deg, #1C1C40, #15152F);
+    border:2px solid var(--gold);
+    border-radius:20px;
+    padding:26px 20px;
+    position:relative;
+    text-align:center;
+  }
+  .diploma-card::before, .diploma-card::after{
+    content:"";position:absolute;width:22px;height:22px;border:2px solid var(--gold);
+  }
+  .diploma-card::before{top:8px;left:8px;border-right:none;border-bottom:none;}
+  .diploma-card::after{bottom:8px;right:8px;border-left:none;border-top:none;}
+  .diploma-seal{font-size:40px;margin-bottom:6px;}
+  .diploma-kicker{font-size:11px;letter-spacing:.08em;color:var(--gold);font-weight:700;margin-bottom:6px;}
+  .diploma-name{font-family:'Baloo 2';font-size:24px;font-weight:800;margin:4px 0 2px;}
+  .diploma-line{width:60px;height:2px;background:var(--gold);margin:10px auto;}
+  .diploma-body{font-size:13px;color:var(--text-dim);line-height:1.6;text-align:left;margin:14px 0;}
+  .diploma-body b{color:var(--text);}
+  .diploma-date{font-size:12px;color:var(--text-dim);margin-top:10px;}
+
+  /* ---- Modal (curiosity) ---- */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(11,11,31,.75);backdrop-filter:blur(3px);
+    display:none;align-items:center;justify-content:center;z-index:50;padding:24px;
+  }
+  .modal-overlay.active{display:flex;}
+  .modal-box{
+    background:var(--surface);border-radius:var(--radius-lg);padding:26px 22px;max-width:380px;width:100%;
+    border:1px solid var(--line);text-align:center;
+  }
+  .modal-box .silvio{margin:0 auto 14px;}
+  .modal-box p{font-size:15px;line-height:1.5;color:var(--text);margin:0 0 20px;}
+
+  .section-title{font-size:22px;font-weight:700;margin:0 0 4px;}
+  .section-sub{color:var(--text-dim);font-size:14px;margin:0 0 18px;}
+
+  ::-webkit-scrollbar{display:none;}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ONBOARDING -->
+  <div class="screen active" id="screen-onboarding">
+    <div class="onboard-wrap">
+      <div class="silvio happy"><div class="head"><div class="goggles"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div><div class="mouth"></div></div><div class="silvio-flask"></div></div>
+      <h1 class="display" style="font-size:28px;margin:0;">Silvio Responde</h1>
+      <p class="section-sub" style="margin:0;">Aprende Química a jogar, com o Silvio como teu guia.</p>
+      <div class="card" style="width:100%;">
+        <div class="field">
+          <label for="in-name">Como te chamas?</label>
+          <input id="in-name" type="text" placeholder="O teu nome" maxlength="20">
+        </div>
+        <div class="field">
+          <label for="in-age">Idade</label>
+          <input id="in-age" type="number" placeholder="Ex: 16" min="6" max="99">
+        </div>
+        <div class="field" style="margin-bottom:4px;">
+          <label for="in-level">Nível académico</label>
+          <select id="in-level">
+            <option value="">Escolhe...</option>
+            <option value="basico">Ensino Básico</option>
+            <option value="medio">Ensino Médio / Secundário</option>
+            <option value="tecnico">Formação Técnica</option>
+            <option value="superior">Ensino Superior</option>
+            <option value="autodidata">A aprender por conta própria</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn" id="btn-start-diagnostic">Começar teste rápido</button>
+    </div>
+  </div>
+
+  <!-- DIAGNOSTIC -->
+  <div class="screen" id="screen-diagnostic">
+    <div class="topbar">
+      <span class="chip">🧪 Teste diagnóstico</span>
+      <span class="chip" id="diag-count">1/5</span>
+    </div>
+    <div class="progress-bar"><div id="diag-progress" style="width:20%;"></div></div>
+    <div class="question-card">
+      <div class="question-meta" id="diag-meta">PERGUNTA 1</div>
+      <div class="question-text" id="diag-question">...</div>
+    </div>
+    <div id="diag-options"></div>
+    <div style="flex:1;"></div>
+    <div class="silvio" id="diag-silvio" style="align-self:center;"><div class="head"><div class="goggles"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div><div class="mouth"></div></div><div class="silvio-flask"></div></div>
+  </div>
+
+  <!-- DIAGNOSTIC RESULT -->
+  <div class="screen" id="screen-diagnostic-result">
+    <div class="onboard-wrap">
+      <div class="silvio happy"><div class="head"><div class="goggles"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div><div class="mouth"></div></div><div class="silvio-flask"></div></div>
+      <h2 class="display" style="margin:0;">Boa, <span id="res-name"></span>!</h2>
+      <p class="section-sub" id="res-text" style="margin:0;">Resultado do teste...</p>
+      <div class="card" style="width:100%;">
+        <div class="stat-grid" style="margin-bottom:0;">
+          <div class="stat-box"><div class="stat-num" id="res-score">0/5</div><div class="stat-label">Acertos</div></div>
+          <div class="stat-box"><div class="stat-num" id="res-level" style="font-size:16px;">Básico</div><div class="stat-label">Ponto de partida</div></div>
+        </div>
+      </div>
+      <button class="btn" id="btn-go-map">Ver o mapa</button>
+    </div>
+  </div>
+
+  <!-- MAP -->
+  <div class="screen" id="screen-map">
+    <div class="topbar">
+      <span class="chip xp">⭐ <span id="map-xp">0</span> XP</span>
+      <span class="chip streak">🔥 <span id="map-streak">0</span> dias</span>
+      <span class="chip">🏆 <span id="map-score">0</span></span>
+    </div>
+    <h2 class="section-title">Mapa da Química</h2>
+    <p class="section-sub">Escolhe uma fase desbloqueada para continuar.</p>
+    <div class="level-tabs" id="level-tabs"></div>
+    <div class="map-path" id="map-path"></div>
+  </div>
+
+  <!-- PHASE / CHALLENGE -->
+  <div class="screen" id="screen-phase">
+    <div class="topbar">
+      <button class="btn-small" id="btn-exit-phase">← Sair</button>
+      <span class="chip" id="phase-title-chip">Fase</span>
+    </div>
+    <div class="progress-bar"><div id="phase-progress" style="width:0%;"></div></div>
+    <div class="question-card">
+      <div class="question-meta" id="phase-meta">PERGUNTA 1 DE 3</div>
+      <div class="question-text" id="phase-question">...</div>
+      <div id="phase-fill-wrap" style="display:none;">
+        <input class="fill-input" id="phase-fill-input" placeholder="A tua resposta" autocomplete="off">
+      </div>
+    </div>
+    <div id="phase-options"></div>
+    <div id="phase-feedback"></div>
+    <div style="flex:1;"></div>
+    <button class="btn" id="btn-phase-confirm" style="margin-top:14px;">Confirmar</button>
+    <button class="btn" id="btn-phase-next" style="margin-top:14px;display:none;">Continuar</button>
+  </div>
+
+  <!-- PHASE COMPLETE -->
+  <div class="screen" id="screen-phase-complete">
+    <div class="onboard-wrap">
+      <div class="silvio happy" style="width:130px;height:130px;"><div class="head"><div class="goggles"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div><div class="mouth"></div></div><div class="silvio-flask"></div></div>
+      <h2 class="display" style="margin:0;" id="pc-title">Fase concluída!</h2>
+      <p class="section-sub" id="pc-sub">Muito bem!</p>
+      <div class="stat-grid" style="width:100%;">
+        <div class="stat-box"><div class="stat-num" id="pc-xp">+0</div><div class="stat-label">XP ganho</div></div>
+        <div class="stat-box"><div class="stat-num" id="pc-acc">0%</div><div class="stat-label">Precisão</div></div>
+      </div>
+      <button class="btn" id="btn-pc-continue">Voltar ao mapa</button>
+    </div>
+  </div>
+
+  <!-- LAB -->
+  <div class="screen" id="screen-lab">
+    <div class="topbar">
+      <span class="chip xp">⭐ <span id="lab-xp">0</span> XP</span>
+    </div>
+    <h2 class="section-title">🔬 Laboratório do Silvio</h2>
+    <p class="section-sub">Experiências virtuais seguras. Toca para explorar.</p>
+    <div id="lab-list"></div>
+  </div>
+
+  <!-- LAB EXPERIMENT -->
+  <div class="screen" id="screen-lab-exp">
+    <div class="topbar">
+      <button class="btn-small" id="btn-exit-lab-exp">← Voltar</button>
+      <span class="chip" id="exp-chip">Experiência</span>
+    </div>
+    <h2 class="section-title" id="exp-title">...</h2>
+    <div class="beaker" id="exp-beaker"><div class="glass"><div class="liquid"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div></div></div>
+    <div class="card" style="margin-bottom:12px;">
+      <div class="question-meta">MATERIAIS</div>
+      <div class="feedback-body" id="exp-materials" style="color:var(--text);"></div>
+    </div>
+    <div class="card" style="margin-bottom:12px;">
+      <div class="question-meta">PROCEDIMENTO</div>
+      <div class="feedback-body" id="exp-steps" style="color:var(--text);"></div>
+    </div>
+    <div class="feedback-panel ok" id="exp-result-panel" style="display:none;">
+      <div>
+        <div class="feedback-title">🧪 Resultado</div>
+        <div class="feedback-body" id="exp-result"></div>
+      </div>
+    </div>
+    <div style="flex:1;"></div>
+    <button class="btn" id="btn-run-exp">Executar experiência</button>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="screen" id="screen-profile">
+    <h2 class="section-title" style="margin-top:4px;">Perfil</h2>
+    <div class="profile-header">
+      <div class="silvio" id="profile-silvio" style="width:90px;height:90px;"><div class="head"><div class="goggles"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div><div class="mouth"></div></div><div class="silvio-flask"></div></div>
+      <div>
+        <div style="font-weight:700;font-size:19px;" id="prof-name">Jogador</div>
+        <div class="section-sub" style="margin:2px 0 0;" id="prof-sub">Nível · Idade</div>
+      </div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="stat-num" id="prof-xp">0</div><div class="stat-label">XP total</div></div>
+      <div class="stat-box"><div class="stat-num" id="prof-score">0</div><div class="stat-label">Pontuação</div></div>
+      <div class="stat-box"><div class="stat-num" id="prof-streak">0</div><div class="stat-label">Sequência (dias)</div></div>
+      <div class="stat-box"><div class="stat-num" id="prof-phases">0/15</div><div class="stat-label">Fases concluídas</div></div>
+    </div>
+    <h3 style="font-size:15px;margin:6px 0 12px;">Progresso por área</h3>
+    <div id="prof-areas"></div>
+    <h3 style="font-size:15px;margin:16px 0 8px;">Conquistas</h3>
+    <div class="badge-row" id="prof-badges"></div>
+    <div style="height:16px;"></div>
+    <button class="btn" id="btn-view-diploma" style="display:none;background:var(--gold);box-shadow:0 6px 0 #B8934A;color:#2A1E05;">🏆 Ver Diploma</button>
+    <div style="height:12px;"></div>
+    <button class="btn secondary" id="btn-reset">Recomeçar progresso</button>
+  </div>
+
+  <!-- DIPLOMA -->
+  <div class="screen" id="screen-diploma">
+    <div class="topbar">
+      <button class="btn-small" id="btn-exit-diploma">← Voltar</button>
+      <span class="chip">🏆 Diploma</span>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+      <div class="diploma-card">
+        <div class="diploma-seal">🏆</div>
+        <div class="diploma-kicker">DIPLOMA DE CONCLUSÃO · SILVIO RESPONDE</div>
+        <div class="diploma-name" id="dip-name">Nome do Aluno</div>
+        <div class="diploma-line"></div>
+        <div class="diploma-body">
+          Concluiu com sucesso os três níveis de Química da plataforma e demonstra atualmente as seguintes capacidades:
+          <br><br>
+          🟢 <b>Nível Básico</b> — compreende matéria, átomos, elementos, símbolos químicos e a organização da tabela periódica.<br><br>
+          🟡 <b>Nível Médio</b> — domina ligações químicas, fórmulas, reações, ácidos/bases e o conceito de mol.<br><br>
+          🔴 <b>Nível Avançado</b> — aplica equilíbrio de equações, estequiometria, termoquímica, eletroquímica e química orgânica básica.
+        </div>
+        <div class="stat-grid" style="margin-bottom:0;">
+          <div class="stat-box"><div class="stat-num" id="dip-xp">0</div><div class="stat-label">XP total</div></div>
+          <div class="stat-box"><div class="stat-num" id="dip-badges">0/8</div><div class="stat-label">Conquistas</div></div>
+        </div>
+        <div class="diploma-date" id="dip-date">Emitido em —</div>
+      </div>
+    </div>
+    <button class="btn" id="btn-diploma-profile" style="margin-top:16px;">Voltar ao Perfil</button>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav" id="bottom-nav" style="display:none;">
+    <button class="nav-btn" data-nav="map"><span class="nav-icon">🗺️</span>Mapa</button>
+    <button class="nav-btn" data-nav="lab"><span class="nav-icon">🔬</span>Lab</button>
+    <button class="nav-btn" data-nav="profile"><span class="nav-icon">🙂</span>Perfil</button>
+  </div>
+
+  <!-- DAILY CURIOSITY MODAL -->
+  <div class="modal-overlay" id="modal-curiosity">
+    <div class="modal-box">
+      <div class="silvio happy"><div class="head"><div class="goggles"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div><div class="mouth"></div></div><div class="silvio-flask"></div></div>
+      <p id="curiosity-text">Curiosidade do dia...</p>
+      <button class="btn" id="btn-curiosity-ok">Começar desafio</button>
+    </div>
+  </div>
+
+  <!-- ACHIEVEMENT TOAST -->
+  <div class="modal-overlay" id="modal-achievement">
+    <div class="modal-box">
+      <div style="font-size:44px;margin-bottom:6px;">🎖️</div>
+      <h3 class="display" style="margin:0 0 6px;">Nova conquista!</h3>
+      <p id="achievement-text">...</p>
+      <button class="btn" id="btn-achievement-ok">Fixe!</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============ DATA ============ */
+
+  var LEVELS = [
+    {
+      id:"basico", name:"Básico", color:"var(--basico)", emoji:"🟢",
+      phases:[
+        { id:"b1", title:"Matéria e Estados Físicos", questions:[
+          {type:"mcq", q:"Em que estado físico as partículas estão mais organizadas e vibram no mesmo lugar?", options:["Sólido","Líquido","Gasoso","Plasma"], correct:0, explain:"No estado sólido as partículas estão muito próximas e organizadas, apenas vibram, sem se deslocar."},
+          {type:"mcq", q:"A passagem direta do estado sólido para o gasoso chama-se:", options:["Fusão","Sublimação","Condensação","Solidificação"], correct:1, explain:"Sublimação é a passagem direta de sólido para gás, sem passar por líquido — como acontece com o gelo seco (CO₂ sólido)."},
+          {type:"mcq", q:"Qual destas é uma propriedade física (não química) da matéria?", options:["Ponto de ebulição","Capacidade de arder","Reagir com ácido","Oxidar-se"], correct:0, explain:"O ponto de ebulição é uma propriedade física: pode ser medido sem alterar a composição da substância."}
+        ]},
+        { id:"b2", title:"Átomos e Elementos", questions:[
+          {type:"mcq", q:"Qual é a partícula do átomo com carga positiva?", options:["Eletrão","Protão","Neutrão","Ião"], correct:1, explain:"O protão tem carga positiva e está no núcleo do átomo, junto com os neutrões (sem carga)."},
+          {type:"mcq", q:"O número atómico de um elemento indica o número de:", options:["Neutrões","Protões","Eletrões na última camada","Isótopos"], correct:1, explain:"O número atómico (Z) é o número de protões no núcleo — é o que identifica o elemento químico."},
+          {type:"fill", q:"Escreve o símbolo químico do elemento Oxigénio.", accept:["o"], explain:"O símbolo do Oxigénio é O, com maiúscula."}
+        ]},
+        { id:"b3", title:"Símbolos Químicos", questions:[
+          {type:"fill", q:"Escreve o símbolo químico do Sódio.", accept:["na"], explain:"Sódio = Na (do latim 'natrium')."},
+          {type:"fill", q:"Escreve o símbolo químico do Ferro.", accept:["fe"], explain:"Ferro = Fe (do latim 'ferrum')."},
+          {type:"mcq", q:"O símbolo 'K' representa qual elemento?", options:["Potássio","Cálcio","Crómio","Carbono"], correct:0, explain:"K vem do latim 'kalium' e representa o Potássio."}
+        ]},
+        { id:"b4", title:"Tabela Periódica Básica", questions:[
+          {type:"mcq", q:"Na tabela periódica, os elementos estão organizados por ordem crescente de:", options:["Massa em gramas","Número atómico","Cor","Preço de mercado"], correct:1, explain:"A tabela periódica moderna organiza os elementos por número atómico crescente."},
+          {type:"mcq", q:"Os elementos de um mesmo grupo (coluna) da tabela periódica têm em comum:", options:["O mesmo número de eletrões de valência","A mesma cor","O mesmo estado físico sempre","O mesmo preço"], correct:0, explain:"Elementos do mesmo grupo têm o mesmo número de eletrões na última camada, por isso têm propriedades químicas parecidas."},
+          {type:"mcq", q:"Os gases nobres são conhecidos por serem:", options:["Muito reativos","Quase inertes (pouco reativos)","Metais pesados","Líquidos à temperatura ambiente"], correct:1, explain:"Os gases nobres têm a última camada de eletrões completa, por isso reagem muito pouco."}
+        ]},
+        { id:"b5", title:"Misturas e Substâncias Puras", questions:[
+          {type:"mcq", q:"A água do mar é um exemplo de:", options:["Substância pura","Mistura homogénea","Elemento químico","Composto puro"], correct:1, explain:"A água do mar é uma mistura homogénea: sal e outros minerais dissolvidos de forma uniforme na água."},
+          {type:"mcq", q:"Qual técnica separa areia de água?", options:["Destilação","Filtração","Decantação eletrónica","Fusão"], correct:1, explain:"A filtração separa um sólido insolúvel (areia) de um líquido (água) usando um filtro."},
+          {type:"mcq", q:"Uma mistura em que se distinguem as fases a olho nu chama-se:", options:["Homogénea","Heterogénea","Composta","Isotópica"], correct:1, explain:"Numa mistura heterogénea, como óleo e água, conseguimos ver as diferentes partes separadamente."}
+        ]}
+      ]
+    },
+    {
+      id:"medio", name:"Médio", color:"var(--medio)", emoji:"🟡",
+      phases:[
+        { id:"m1", title:"Ligações Químicas", questions:[
+          {type:"mcq", q:"A ligação em que há partilha de eletrões entre átomos chama-se:", options:["Iónica","Covalente","Metálica","Nuclear"], correct:1, explain:"Na ligação covalente, os átomos partilham pares de eletrões — típico entre não-metais, como em H₂O."},
+          {type:"mcq", q:"A ligação entre um metal e um não-metal, com transferência de eletrões, chama-se:", options:["Covalente","Iónica","Metálica","De hidrogénio"], correct:1, explain:"Na ligação iónica há transferência de eletrões, formando iões positivos e negativos que se atraem — como no NaCl."},
+          {type:"mcq", q:"Nos metais, os eletrões de valência formam o que se chama:", options:["Mar de eletrões","Nuvem ácida","Rede covalente","Camada de valência fixa"], correct:0, explain:"Na ligação metálica, os eletrões de valência movem-se livremente formando o chamado 'mar de eletrões'."}
+        ]},
+        { id:"m2", title:"Fórmulas Químicas", questions:[
+          {type:"fill", q:"Escreve a fórmula química da água.", accept:["h2o"], explain:"A água é H₂O: dois átomos de hidrogénio e um de oxigénio."},
+          {type:"fill", q:"Escreve a fórmula química do dióxido de carbono.", accept:["co2"], explain:"Dióxido de carbono = CO₂: um carbono ligado a dois oxigénios."},
+          {type:"fill", q:"Escreve a fórmula química do cloreto de sódio (sal de cozinha).", accept:["nacl"], explain:"Cloreto de sódio = NaCl, formado por iões Na⁺ e Cl⁻."}
+        ]},
+        { id:"m3", title:"Reações Químicas", questions:[
+          {type:"fill", q:"Completa: bicarbonato de sódio + ácido acético → sal + água + ___", accept:["dioxido de carbono","co2","dioxido de carbono gasoso"], explain:"Essa reação liberta dióxido de carbono (CO₂), o gás que faz a mistura borbulhar — como no vulcão de bicarbonato."},
+          {type:"mcq", q:"Numa reação exotérmica, o sistema:", options:["Absorve calor do ambiente","Liberta calor para o ambiente","Não troca energia","Fica sempre mais frio"], correct:1, explain:"Reações exotérmicas libertam energia (calor) para o ambiente — por isso o recipiente fica quente."},
+          {type:"mcq", q:"Numa equação química equilibrada, o número de átomos de cada elemento:", options:["Deve ser diferente nos dois lados","Deve ser igual nos dois lados","Só importa do lado dos reagentes","Não é relevante"], correct:1, explain:"Pela Lei da Conservação da Massa, o número de átomos de cada elemento tem de ser igual nos reagentes e nos produtos."}
+        ]},
+        { id:"m4", title:"Ácidos e Bases", questions:[
+          {type:"mcq", q:"Uma substância com pH inferior a 7 é considerada:", options:["Ácida","Básica (alcalina)","Neutra","Radioativa"], correct:0, explain:"O pH vai de 0 a 14: valores abaixo de 7 indicam soluções ácidas, como o vinagre e o sumo de limão."},
+          {type:"mcq", q:"O papel de tornassol azul fica vermelho na presença de:", options:["Uma base","Um ácido","Água pura","Um sal neutro"], correct:1, explain:"Ácidos tornam o papel de tornassol azul em vermelho; bases fazem o oposto (vermelho para azul)."},
+          {type:"mcq", q:"Qual destes é um exemplo de base (alcalino) do dia a dia?", options:["Vinagre","Sumo de limão","Sabão / detergente","Coca-Cola"], correct:2, explain:"Sabões e muitos detergentes são básicos (alcalinos), com pH acima de 7."}
+        ]},
+        { id:"m5", title:"Massa Atómica e Mol", questions:[
+          {type:"mcq", q:"O mol é a unidade usada para medir:", options:["Temperatura","Quantidade de substância","Pressão","Densidade"], correct:1, explain:"O mol é a unidade do Sistema Internacional para 'quantidade de substância' — 1 mol contém cerca de 6,02×10²³ partículas."},
+          {type:"mcq", q:"O número de Avogadro é aproximadamente:", options:["6,02 × 10²³","3,14 × 10⁸","9,8 × 10¹⁰","1,6 × 10⁻¹⁹"], correct:0, explain:"O número de Avogadro (6,02×10²³) indica quantas partículas existem em 1 mol de qualquer substância."},
+          {type:"mcq", q:"A massa molar da água (H₂O) é aproximadamente:", options:["16 g/mol","18 g/mol","20 g/mol","44 g/mol"], correct:1, explain:"H (1g/mol) × 2 + O (16g/mol) = 18 g/mol, a massa molar da água."}
+        ]}
+      ]
+    },
+    {
+      id:"avancado", name:"Avançado", color:"var(--avancado)", emoji:"🔴",
+      phases:[
+        { id:"a1", title:"Equilíbrio de Equações", questions:[
+          {type:"fill", q:"Equilibra: __H₂ + O₂ → __H₂O (escreve só o coeficiente que falta antes do H₂ dos reagentes)", accept:["2"], explain:"A equação equilibrada é 2H₂ + O₂ → 2H₂O: assim há 4 átomos de H e 2 de O em cada lado."},
+          {type:"mcq", q:"Numa equação química, os números grandes à frente das fórmulas chamam-se:", options:["Índices","Coeficientes estequiométricos","Expoentes","Isótopos"], correct:1, explain:"Os coeficientes estequiométricos indicam quantas moléculas ou moles de cada substância participam na reação."},
+          {type:"mcq", q:"Qual lei justifica a necessidade de equilibrar equações químicas?", options:["Lei de Avogadro","Lei da Conservação da Massa","Lei dos Gases Ideais","Lei de Ohm"], correct:1, explain:"A Lei da Conservação da Massa (Lavoisier) diz que a massa total dos reagentes é igual à massa total dos produtos."}
+        ]},
+        { id:"a2", title:"Estequiometria", questions:[
+          {type:"mcq", q:"A estequiometria estuda principalmente:", options:["A velocidade das reações","As proporções entre reagentes e produtos","A cor das substâncias","A condutividade elétrica"], correct:1, explain:"A estequiometria calcula as quantidades (em massa, mol ou volume) de reagentes e produtos numa reação."},
+          {type:"mcq", q:"Numa reação, o reagente que se esgota primeiro e limita a quantidade de produto formado chama-se:", options:["Reagente em excesso","Reagente limitante","Catalisador","Produto secundário"], correct:1, explain:"O reagente limitante é consumido primeiro, determinando a quantidade máxima de produto que se pode formar."},
+          {type:"fill", q:"Se 2 mol de H₂ reagem completamente com O₂ segundo 2H₂+O₂→2H₂O, quantos mol de H₂O se formam? (número)", accept:["2"], explain:"Pela proporção 2:2, 2 mol de H₂ produzem 2 mol de H₂O."}
+        ]},
+        { id:"a3", title:"Termoquímica", questions:[
+          {type:"mcq", q:"A variação de entalpia (ΔH) negativa indica uma reação:", options:["Endotérmica","Exotérmica","Sem energia","Instantânea"], correct:1, explain:"ΔH negativo significa que o sistema perde energia para o ambiente — reação exotérmica."},
+          {type:"mcq", q:"Um processo que absorve calor do ambiente chama-se:", options:["Exotérmico","Isotérmico","Endotérmico","Adiabático"], correct:2, explain:"Processos endotérmicos absorvem energia do ambiente, por isso o ambiente ao redor esfria."},
+          {type:"mcq", q:"A unidade padrão de energia usada em termoquímica é:", options:["Watt","Joule","Newton","Pascal"], correct:1, explain:"O Joule (J) é a unidade de energia no Sistema Internacional, usada para medir calor e trabalho."}
+        ]},
+        { id:"a4", title:"Eletroquímica", questions:[
+          {type:"mcq", q:"Numa pilha eletroquímica, o elétrodo onde ocorre oxidação chama-se:", options:["Cátodo","Ânodo","Eletrólito","Condutor neutro"], correct:1, explain:"No ânodo ocorre oxidação (perda de eletrões); no cátodo ocorre redução (ganho de eletrões)."},
+          {type:"mcq", q:"A corrosão do ferro (formação de ferrugem) é um exemplo de reação de:", options:["Oxidação-redução","Neutralização ácido-base","Fusão nuclear","Sublimação"], correct:0, explain:"A ferrugem forma-se quando o ferro se oxida na presença de oxigénio e água — uma reação redox."},
+          {type:"mcq", q:"Numa eletrólise, a energia elétrica é usada para:", options:["Impedir reações químicas","Provocar uma reação química não espontânea","Medir temperatura","Aumentar a massa das substâncias"], correct:1, explain:"Na eletrólise, a corrente elétrica fornece energia para forçar reações que não ocorreriam sozinhas."}
+        ]},
+        { id:"a5", title:"Química Orgânica Básica", questions:[
+          {type:"mcq", q:"O elemento central presente em todos os compostos orgânicos é:", options:["Oxigénio","Carbono","Azoto","Enxofre"], correct:1, explain:"A Química Orgânica estuda os compostos que contêm carbono, geralmente ligado a hidrogénio."},
+          {type:"fill", q:"Escreve a fórmula química do metano, o hidrocarboneto mais simples.", accept:["ch4"], explain:"O metano é CH₄: um carbono ligado a quatro hidrogénios."},
+          {type:"mcq", q:"Os hidrocarbonetos são compostos formados apenas por:", options:["Carbono e oxigénio","Carbono e hidrogénio","Carbono e azoto","Hidrogénio e oxigénio"], correct:1, explain:"Hidrocarbonetos contêm apenas átomos de carbono e hidrogénio — como o metano e o etano."}
+        ]}
+      ]
+    }
+  ];
+
+  var DIAGNOSTIC = [
+    {q:"Qual é o estado físico em que a matéria tem forma e volume definidos?", options:["Sólido","Gasoso","Plasma","Nenhum"], correct:0},
+    {q:"O símbolo 'Fe' representa qual elemento?", options:["Flúor","Ferro","Fósforo","Frâncio"], correct:1},
+    {q:"A fórmula química da água é:", options:["H₂O","CO₂","O₂","NaCl"], correct:0},
+    {q:"Um ácido tem pH:", options:["Acima de 7","Igual a 7","Abaixo de 7","Não tem pH"], correct:2},
+    {q:"O número de Avogadro é usado para contar:", options:["Partículas numa amostra","Graus de temperatura","Segundos numa reação","Cores de chamas"], correct:0}
+  ];
+
+  var EXPERIMENTS = [
+    { id:"volcano", emoji:"🌋", title:"Vulcão de Bicarbonato", sub:"Reação ácido-base com libertação de gás",
+      materials:"Bicarbonato de sódio, vinagre (ácido acético), um recipiente pequeno e corante alimentar (opcional).",
+      steps:"1. Coloca 2 colheres de bicarbonato de sódio no recipiente.<br>2. Adiciona algumas gotas de corante, se quiseres.<br>3. Deita vinagre lentamente sobre o bicarbonato e observa.",
+      result:"A mistura borbulha intensamente e liberta dióxido de carbono (CO₂). A reação forma também água e acetato de sódio. É uma reação ácido-base clássica, seguraníssima para fazer em casa."
+    },
+    { id:"tinta", emoji:"🍋", title:"Tinta Invisível de Limão", sub:"Oxidação por calor",
+      materials:"Sumo de limão, um cotonete ou pincel fino, papel branco e uma fonte de calor (lâmpada ou ferro de engomar frio).",
+      steps:"1. Usa o cotonete embebido em sumo de limão para escrever no papel.<br>2. Deixa secar completamente — a escrita fica invisível.<br>3. Aproxima o papel de uma fonte de calor suave.",
+      result:"O calor oxida os compostos orgânicos do sumo de limão presentes no papel, que escurecem e revelam a mensagem. É um exemplo simples de reação de oxidação."
+    },
+    { id:"densidade", emoji:"🧫", title:"Torre de Densidades", sub:"Densidade e miscibilidade de líquidos",
+      materials:"Mel, água colorida, óleo vegetal e um copo transparente.",
+      steps:"1. Deita o mel no fundo do copo com cuidado.<br>2. Adiciona a água colorida lentamente, pelo lado do copo.<br>3. Por fim, adiciona o óleo, também devagar.",
+      result:"Formam-se camadas distintas: mel no fundo, água no meio e óleo no topo — porque cada líquido tem uma densidade diferente e não se misturam facilmente entre si."
+    },
+    { id:"ovo", emoji:"🥚", title:"Ovo Elástico", sub:"Reação ácido-carbonato caseira",
+      materials:"Um ovo cru, um copo e vinagre suficiente para o cobrir.",
+      steps:"1. Coloca o ovo com cuidado dentro do copo.<br>2. Cobre completamente com vinagre.<br>3. Deixa em repouso 24 a 48 horas, sem mexer.",
+      result:"O ácido acético do vinagre dissolve o carbonato de cálcio da casca, libertando CO₂ (as bolhas que se veem à superfície do ovo). No fim, resta apenas a membrana interna, e o ovo fica com um aspeto elástico e transparente."
+    },
+    { id:"repolho", emoji:"🥬", title:"Indicador de Repolho Roxo", sub:"Indicador de pH caseiro",
+      materials:"Algumas folhas de repolho roxo, água quente, um coador e 2-3 copos com líquidos diferentes (vinagre, água com sabão, água simples).",
+      steps:"1. Corta o repolho roxo em pedaços e cobre com água quente.<br>2. Deixa arrefecer e coa, guardando o líquido roxo — este é o indicador.<br>3. Deita algumas gotas do indicador em cada copo com um líquido diferente e observa a cor.",
+      result:"O indicador de repolho roxo muda de cor consoante o pH: fica rosa/vermelho em ácidos (vinagre), roxo/azul em substâncias neutras e verde/amarelo em bases (água com sabão) — graças a um pigmento chamado antocianina."
+    }
+  ];
+
+  var CURIOSITIES = [
+    "sabias que quando misturamos bicarbonato de sódio com vinagre ocorre uma reação que liberta dióxido de carbono?",
+    "sabias que a água é uma das poucas substâncias que é menos densa em estado sólido do que em estado líquido? Por isso o gelo flutua!",
+    "sabias que o corpo humano é feito principalmente de oxigénio, carbono, hidrogénio e azoto?",
+    "sabias que o hélio foi descoberto primeiro no Sol, antes de ser encontrado na Terra?",
+    "sabias que o diamante e o grafite (da ponta do lápis) são feitos do mesmo elemento — o carbono — mas organizado de forma diferente?",
+    "sabias que o ouro é tão maleável que 1 grama pode ser esticado num fio de quase 2 km?",
+    "sabias que o ar que respiramos é cerca de 78% azoto e apenas 21% oxigénio?",
+    "sabias que podes fazer um indicador de pH caseiro com repolho roxo? Ele muda de cor consoante toque num ácido ou numa base — experimenta no Laboratório!",
+    "sabias que se deixares um ovo cru dentro de vinagre durante um dia inteiro, o ácido dissolve a casca e o ovo fica com uma 'pele' elástica?",
+    "sabias que esfregar um balão no cabelo seco gera eletricidade estática capaz de atrair pequenos pedaços de papel?",
+    "sabias que podes fazer crescer cristais de sal em casa, só com água quente, sal de cozinha e alguns dias de paciência?",
+    "sabias que misturar leite com um pouco de detergente cria padrões coloridos incríveis, por causa da tensão superficial?",
+    "sabias que podes saber se um ovo ainda está fresco colocando-o num copo com água? Se afundar, está fresco; se flutuar, já não deves comê-lo."
+  ];
+
+  var ACHIEVEMENTS = [
+    {id:"first_phase", icon:"🥇", name:"Primeira Fase", desc:"Completa a tua primeira fase.", check:function(s){return s.completedPhases.length>=1;}},
+    {id:"basico_done", icon:"🌱", name:"Cientista Júnior", desc:"Conclui todo o nível Básico.", check:function(s){return countDoneInLevel(s,"basico")===5;}},
+    {id:"medio_done", icon:"⚗️", name:"Químico em Formação", desc:"Conclui todo o nível Médio.", check:function(s){return countDoneInLevel(s,"medio")===5;}},
+    {id:"avancado_done", icon:"🏅", name:"Mestre da Química", desc:"Conclui todo o nível Avançado.", check:function(s){return countDoneInLevel(s,"avancado")===5;}},
+    {id:"streak3", icon:"🔥", name:"Sequência de Fogo", desc:"3 dias seguidos a jogar.", check:function(s){return s.streak>=3;}},
+    {id:"formulas5", icon:"🧮", name:"Mestre das Fórmulas", desc:"Acerta 5 perguntas de escrita.", check:function(s){return s.fillCorrectCount>=5;}},
+    {id:"lab1", icon:"🔬", name:"Explorador do Lab", desc:"Executa a tua primeira experiência.", check:function(s){return s.labDone.length>=1;}},
+    {id:"lab_all", icon:"🧪", name:"Cientista de Laboratório", desc:"Executa todas as experiências.", check:function(s){return s.labDone.length>=EXPERIMENTS.length;}}
+  ];
+
+  function countDoneInLevel(state, levelId){
+    var lvl = LEVELS.filter(function(l){return l.id===levelId;})[0];
+    var n=0;
+    lvl.phases.forEach(function(p){ if(state.completedPhases.indexOf(p.id)!==-1) n++; });
+    return n;
+  }
+
+  /* ============ STATE ============ */
+  var STORAGE_KEY = "silvioResponde_v1";
+  var defaultState = function(){
+    return {
+      name:"", age:"", academicLevel:"",
+      diagnosticDone:false, diagnosticScore:0, recommendedLevel:"basico",
+      xp:0, score:0, streak:0, lastVisit:null,
+      completedPhases:[], unlockedPhases:["b1"],
+      fillCorrectCount:0, labDone:[], achievements:[],
+      diplomaUnlocked:false, diplomaSeen:false
+    };
+  };
+  var state = loadState();
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return defaultState();
+      var parsed = JSON.parse(raw);
+      var d = defaultState();
+      for(var k in d){ if(parsed[k]===undefined) parsed[k]=d[k]; }
+      return parsed;
+    }catch(e){ return defaultState(); }
+  }
+  function saveState(){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  /* ============ MASCOT RENDER ============ */
+  function silvioInnerHTML(){
+    return '<div class="hair"></div>'+
+      '<div class="head"><div class="goggles"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div><div class="mouth"></div></div>'+
+      '<div class="coat"><div class="lapel left"></div><div class="lapel right"></div><div class="collar-line"></div></div>'+
+      '<div class="silvio-flask"></div>';
+  }
+  document.querySelectorAll(".silvio").forEach(function(el){ el.innerHTML = silvioInnerHTML(); });
+
+  /* ============ NAV ============ */
+  function showScreen(id){
+    document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
+    document.getElementById(id).classList.add("active");
+    var showNav = (id==="screen-map"||id==="screen-lab"||id==="screen-profile");
+    document.getElementById("bottom-nav").style.display = showNav ? "flex" : "none";
+    if(showNav) setActiveNav(id);
+    window.scrollTo(0,0);
+  }
+  function setActiveNav(screenId){
+    var map = {"screen-map":"map","screen-lab":"lab","screen-profile":"profile"};
+    document.querySelectorAll(".nav-btn").forEach(function(b){
+      b.classList.toggle("active", b.getAttribute("data-nav")===map[screenId]);
+    });
+  }
+  document.querySelectorAll(".nav-btn").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var target = btn.getAttribute("data-nav");
+      if(target==="map") renderMap();
+      if(target==="lab") renderLab();
+      if(target==="profile") renderProfile();
+      showScreen("screen-"+target);
+    });
+  });
+
+  /* ============ ONBOARDING ============ */
+  if(state.name){
+    document.getElementById("in-name").value = state.name;
+  }
+  document.getElementById("btn-start-diagnostic").addEventListener("click", function(){
+    var name = document.getElementById("in-name").value.trim();
+    var age = document.getElementById("in-age").value.trim();
+    var level = document.getElementById("in-level").value;
+    if(!name){ document.getElementById("in-name").focus(); return; }
+    state.name = name; state.age = age; state.academicLevel = level;
+    saveState();
+    if(state.diagnosticDone){
+      renderMap(); showScreen("screen-map"); return;
+    }
+    startDiagnostic();
+  });
+
+  /* ============ DIAGNOSTIC ============ */
+  var diagIndex = 0, diagScore = 0, diagLocked=false;
+  function startDiagnostic(){
+    diagIndex = 0; diagScore = 0;
+    showScreen("screen-diagnostic");
+    renderDiagQuestion();
+  }
+  function renderDiagQuestion(){
+    diagLocked=false;
+    var item = DIAGNOSTIC[diagIndex];
+    document.getElementById("diag-count").textContent = (diagIndex+1)+"/5";
+    document.getElementById("diag-meta").textContent = "PERGUNTA "+(diagIndex+1);
+    document.getElementById("diag-question").textContent = item.q;
+    document.getElementById("diag-progress").style.width = (((diagIndex)/5)*100)+"%";
+    var wrap = document.getElementById("diag-options");
+    wrap.innerHTML = "";
+    var letters = ["A","B","C","D"];
+    item.options.forEach(function(opt, i){
+      var el = document.createElement("button");
+      el.className = "option";
+      el.innerHTML = '<span class="letter">'+letters[i]+'</span><span>'+opt+'</span>';
+      el.addEventListener("click", function(){
+        if(diagLocked) return; diagLocked=true;
+        var opts = wrap.querySelectorAll(".option");
+        opts.forEach(function(o,idx){
+          if(idx===item.correct) o.classList.add("correct");
+          else if(o===el) o.classList.add("wrong");
+        });
+        if(i===item.correct) diagScore++;
+        setSilvioMood("diag-silvio", i===item.correct);
+        setTimeout(function(){
+          diagIndex++;
+          if(diagIndex<DIAGNOSTIC.length){ renderDiagQuestion(); }
+          else { finishDiagnostic(); }
+        }, 900);
+      });
+      wrap.appendChild(el);
+    });
+  }
+  function setSilvioMood(id, happy){
+    var el = document.getElementById(id);
+    if(!el) return;
+    el.classList.remove("happy","sad");
+    el.classList.add(happy ? "happy":"sad");
+  }
+  function finishDiagnostic(){
+    state.diagnosticDone = true;
+    state.diagnosticScore = diagScore;
+    state.recommendedLevel = diagScore<=1 ? "basico" : (diagScore<=3 ? "medio" : "avancado");
+    saveState();
+    document.getElementById("res-name").textContent = state.name;
+    document.getElementById("res-score").textContent = diagScore+"/5";
+    var lvlNames = {basico:"🟢 Básico", medio:"🟡 Médio", avancado:"🔴 Avançado"};
+    document.getElementById("res-level").textContent = lvlNames[state.recommendedLevel];
+    var msgs = {
+      basico:"Vamos começar pelos fundamentos e construir uma base sólida em Química.",
+      medio:"Já tens boas bases! Vamos reforçar conceitos e avançar para o nível médio.",
+      avancado:"Excelente resultado! Tens uma boa base — vamos desafiar-te com temas mais avançados."
+    };
+    document.getElementById("res-text").textContent = msgs[state.recommendedLevel];
+    showScreen("screen-diagnostic-result");
+  }
+  document.getElementById("btn-go-map").addEventListener("click", function(){
+    registerVisit();
+    renderMap();
+    showScreen("screen-map");
+    maybeShowCuriosity();
+  });
+
+  /* ============ STREAK / VISIT ============ */
+  function todayStr(){ return new Date().toISOString().slice(0,10); }
+  function registerVisit(){
+    var today = todayStr();
+    if(state.lastVisit===today) return;
+    if(state.lastVisit){
+      var last = new Date(state.lastVisit);
+      var diffDays = Math.round((new Date(today)-last)/86400000);
+      state.streak = (diffDays===1) ? state.streak+1 : 1;
+    } else {
+      state.streak = 1;
+    }
+    state.lastVisit = today;
+    saveState();
+    checkAchievements();
+  }
+  var curiosityShownThisSession = false;
+  function maybeShowCuriosity(){
+    if(curiosityShownThisSession) return;
+    curiosityShownThisSession = true;
+    var c = CURIOSITIES[Math.floor(Math.random()*CURIOSITIES.length)];
+    document.getElementById("curiosity-text").textContent = state.name+", "+c;
+    document.getElementById("modal-curiosity").classList.add("active");
+  }
+  document.getElementById("btn-curiosity-ok").addEventListener("click", function(){
+    document.getElementById("modal-curiosity").classList.remove("active");
+  });
+
+  /* ============ MAP ============ */
+  var currentTabLevel = "basico";
+  function renderMap(){
+    document.getElementById("map-xp").textContent = state.xp;
+    document.getElementById("map-streak").textContent = state.streak;
+    document.getElementById("map-score").textContent = state.score;
+
+    var tabs = document.getElementById("level-tabs");
+    tabs.innerHTML = "";
+    LEVELS.forEach(function(lvl){
+      var tab = document.createElement("button");
+      tab.className = "level-tab"+(lvl.id===currentTabLevel?" active":"");
+      tab.style.setProperty("--tab-color", lvl.color);
+      tab.innerHTML = '<span class="dot" style="background:'+lvl.color+'"></span>'+lvl.name;
+      tab.addEventListener("click", function(){ currentTabLevel = lvl.id; renderMap(); });
+      tabs.appendChild(tab);
+    });
+
+    var lvl = LEVELS.filter(function(l){return l.id===currentTabLevel;})[0];
+    var path = document.getElementById("map-path");
+    path.innerHTML = "";
+    var firstUnlockedFound=false;
+    lvl.phases.forEach(function(phase, idx){
+      var row = document.createElement("div");
+      row.className = "phase-node-row";
+      row.style.flexDirection="column";
+      row.style.alignItems="center";
+
+      var isDone = state.completedPhases.indexOf(phase.id)!==-1;
+      var isUnlocked = state.unlockedPhases.indexOf(phase.id)!==-1;
+      var node = document.createElement("button");
+      node.className = "phase-node "+(isDone?"done":(isUnlocked?"unlocked":"locked"));
+      node.style.setProperty("--node-color", lvl.color);
+      node.innerHTML = isDone ? "✓" : (isUnlocked ? (idx+1) : '<span class="lock">🔒</span>');
+      if(!isUnlocked){ node.disabled = true; }
+      else if(!isDone && !firstUnlockedFound){ node.classList.add("current-anim"); firstUnlockedFound=true; }
+      node.addEventListener("click", function(){
+        if(!isUnlocked) return;
+        startPhase(lvl, phase);
+      });
+      row.appendChild(node);
+      var label = document.createElement("div");
+      label.className = "node-label";
+      label.textContent = phase.title;
+      row.appendChild(label);
+      path.appendChild(row);
+    });
+  }
+
+  /* ============ PHASE / CHALLENGE ============ */
+  var activePhaseLevel=null, activePhase=null, qIndex=0, phaseCorrect=0, phaseAnswered=false;
+  function startPhase(level, phase){
+    activePhaseLevel = level; activePhase = phase;
+    qIndex = 0; phaseCorrect = 0;
+    document.getElementById("phase-title-chip").textContent = level.emoji+" "+phase.title;
+    showScreen("screen-phase");
+    renderPhaseQuestion();
+  }
+  document.getElementById("btn-exit-phase").addEventListener("click", function(){
+    renderMap(); showScreen("screen-map");
+  });
+  function renderPhaseQuestion(){
+    phaseAnswered=false;
+    var q = activePhase.questions[qIndex];
+    document.getElementById("phase-meta").textContent = "PERGUNTA "+(qIndex+1)+" DE "+activePhase.questions.length;
+    document.getElementById("phase-question").textContent = q.q;
+    document.getElementById("phase-progress").style.width = ((qIndex/activePhase.questions.length)*100)+"%";
+    document.getElementById("phase-feedback").innerHTML = "";
+    document.getElementById("btn-phase-confirm").style.display = "block";
+    document.getElementById("btn-phase-confirm").disabled = true;
+    document.getElementById("btn-phase-next").style.display = "none";
+
+    var optWrap = document.getElementById("phase-options");
+    optWrap.innerHTML = "";
+    var fillWrap = document.getElementById("phase-fill-wrap");
+    var fillInput = document.getElementById("phase-fill-input");
+    fillInput.value = "";
+
+    if(q.type==="mcq"){
+      fillWrap.style.display = "none";
+      var letters=["A","B","C","D"];
+      q.options.forEach(function(opt,i){
+        var el = document.createElement("button");
+        el.className="option";
+        el.innerHTML = '<span class="letter">'+letters[i]+'</span><span>'+opt+'</span>';
+        el.addEventListener("click", function(){
+          if(phaseAnswered) return;
+          optWrap.querySelectorAll(".option").forEach(function(o){o.classList.remove("selected");});
+          el.classList.add("selected");
+          el.dataset.chosen="1";
+          selectedMcqIndex = i;
+          document.getElementById("btn-phase-confirm").disabled = false;
+        });
+        optWrap.appendChild(el);
+      });
+    } else {
+      fillWrap.style.display = "block";
+      fillInput.oninput = function(){
+        document.getElementById("btn-phase-confirm").disabled = fillInput.value.trim().length===0;
+      };
+    }
+  }
+  var selectedMcqIndex = null;
+  document.getElementById("btn-phase-confirm").addEventListener("click", function(){
+    if(phaseAnswered) return;
+    var q = activePhase.questions[qIndex];
+    var isCorrect;
+    if(q.type==="mcq"){
+      isCorrect = selectedMcqIndex===q.correct;
+      var opts = document.getElementById("phase-options").querySelectorAll(".option");
+      opts.forEach(function(o,idx){
+        if(idx===q.correct) o.classList.add("correct");
+        else if(idx===selectedMcqIndex) o.classList.add("wrong");
+      });
+    } else {
+      var val = document.getElementById("phase-fill-input").value.trim().toLowerCase().replace(/\s+/g," ");
+      isCorrect = q.accept.indexOf(val)!==-1;
+      document.getElementById("phase-fill-input").style.borderColor = isCorrect ? "var(--lime)" : "var(--pink)";
+      if(isCorrect) state.fillCorrectCount++;
+    }
+    phaseAnswered = true;
+    if(isCorrect) phaseCorrect++;
+    var fb = document.getElementById("phase-feedback");
+    if(isCorrect){
+      fb.innerHTML = '<div class="feedback-panel ok"><div>🧑‍🔬</div><div><div class="feedback-title">Resposta correta!</div><div class="feedback-body">'+q.explain+'</div></div></div>';
+      state.xp += (q.type==="fill" ? 15 : 10);
+      state.score += 10;
+    } else {
+      fb.innerHTML = '<div class="feedback-panel bad"><div>🧑‍🔬</div><div><div class="feedback-title">Quase! Resposta incorreta.</div><div class="feedback-body">'+q.explain+'</div><div class="summary-block">💡 Resumo rápido: '+q.explain+'</div></div></div>';
+    }
+    saveState();
+    document.getElementById("btn-phase-confirm").style.display = "none";
+    document.getElementById("btn-phase-next").style.display = "block";
+    document.getElementById("btn-phase-next").textContent = (qIndex<activePhase.questions.length-1) ? "Continuar" : "Ver resultado";
+  });
+  document.getElementById("btn-phase-next").addEventListener("click", function(){
+    qIndex++;
+    selectedMcqIndex=null;
+    if(qIndex < activePhase.questions.length){
+      renderPhaseQuestion();
+    } else {
+      finishPhase();
+    }
+  });
+  function finishPhase(){
+    var total = activePhase.questions.length;
+    var passed = phaseCorrect >= Math.ceil(total*0.6);
+    var xpGained = phaseCorrect * (10);
+    if(passed){
+      if(state.completedPhases.indexOf(activePhase.id)===-1){
+        state.completedPhases.push(activePhase.id);
+        state.xp += 20;
+        state.score += 30;
+      }
+      unlockNextPhase(activePhaseLevel, activePhase);
+      var totalPhasesAll = LEVELS.reduce(function(a,l){return a+l.phases.length;},0);
+      if(state.completedPhases.length>=totalPhasesAll && !state.diplomaUnlocked){
+        state.diplomaUnlocked = true;
+      }
+    }
+    saveState();
+    document.getElementById("pc-title").textContent = passed ? "Fase concluída! 🎉" : "Quase lá!";
+    document.getElementById("pc-sub").textContent = passed
+      ? "O Silvio está orgulhoso do teu progresso."
+      : "Precisas de "+Math.ceil(total*0.6)+" acertos para passar. Tenta outra vez!";
+    document.getElementById("pc-xp").textContent = "+"+(xpGained + (passed?20:0));
+    document.getElementById("pc-acc").textContent = Math.round((phaseCorrect/total)*100)+"%";
+    showScreen("screen-phase-complete");
+    checkAchievements();
+  }
+  function unlockNextPhase(level, phase){
+    var idx = level.phases.findIndex(function(p){return p.id===phase.id;});
+    if(idx>=0 && idx<level.phases.length-1){
+      var nextId = level.phases[idx+1].id;
+      if(state.unlockedPhases.indexOf(nextId)===-1) state.unlockedPhases.push(nextId);
+    } else if(idx===level.phases.length-1){
+      var lvlIdx = LEVELS.findIndex(function(l){return l.id===level.id;});
+      if(lvlIdx>=0 && lvlIdx<LEVELS.length-1){
+        var nextLevel = LEVELS[lvlIdx+1];
+        var firstNextId = nextLevel.phases[0].id;
+        if(state.unlockedPhases.indexOf(firstNextId)===-1) state.unlockedPhases.push(firstNextId);
+      }
+    }
+  }
+  document.getElementById("btn-pc-continue").addEventListener("click", function(){
+    if(state.diplomaUnlocked && !state.diplomaSeen){
+      state.diplomaSeen = true;
+      saveState();
+      renderDiploma();
+      showScreen("screen-diploma");
+      return;
+    }
+    renderMap(); showScreen("screen-map");
+  });
+
+  /* ============ LAB ============ */
+  function renderLab(){
+    document.getElementById("lab-xp").textContent = state.xp;
+    var list = document.getElementById("lab-list");
+    list.innerHTML = "";
+    EXPERIMENTS.forEach(function(exp){
+      var done = state.labDone.indexOf(exp.id)!==-1;
+      var card = document.createElement("button");
+      card.className = "exp-card";
+      card.style.width="100%";
+      card.style.textAlign="left";
+      card.innerHTML =
+        '<div class="exp-emoji">'+exp.emoji+'</div>'+
+        '<div><div class="exp-title">'+exp.title+'</div><div class="exp-sub">'+exp.sub+'</div></div>'+
+        (done ? '<div class="exp-done-badge">✓</div>' : '');
+      card.addEventListener("click", function(){ openExperiment(exp); });
+      list.appendChild(card);
+    });
+  }
+  var activeExp = null;
+  function openExperiment(exp){
+    activeExp = exp;
+    document.getElementById("exp-chip").textContent = exp.emoji+" Experiência";
+    document.getElementById("exp-title").textContent = exp.title;
+    document.getElementById("exp-materials").innerHTML = exp.materials;
+    document.getElementById("exp-steps").innerHTML = exp.steps;
+    document.getElementById("exp-result-panel").style.display = "none";
+    document.getElementById("exp-beaker").classList.remove("reacting");
+    document.getElementById("btn-run-exp").style.display = "block";
+    document.getElementById("btn-run-exp").disabled = false;
+    document.getElementById("btn-run-exp").textContent = "Executar experiência";
+    showScreen("screen-lab-exp");
+  }
+  document.getElementById("btn-exit-lab-exp").addEventListener("click", function(){
+    renderLab(); showScreen("screen-lab");
+  });
+  document.getElementById("btn-run-exp").addEventListener("click", function(){
+    document.getElementById("btn-run-exp").disabled = true;
+    document.getElementById("exp-beaker").classList.add("reacting");
+    setTimeout(function(){
+      document.getElementById("exp-result-panel").style.display = "flex";
+      document.getElementById("exp-result").textContent = activeExp.result;
+      document.getElementById("btn-run-exp").textContent = "Experiência concluída ✓";
+      if(state.labDone.indexOf(activeExp.id)===-1){
+        state.labDone.push(activeExp.id);
+        state.xp += 15;
+        saveState();
+        checkAchievements();
+      }
+    }, 1300);
+  });
+
+  /* ============ PROFILE ============ */
+  function renderProfile(){
+    document.getElementById("prof-name").textContent = state.name || "Jogador";
+    var levelLabels = {basico:"Ensino Básico", medio:"Ensino Médio", tecnico:"Formação Técnica", superior:"Ensino Superior", autodidata:"Autodidata"};
+    document.getElementById("prof-sub").textContent = (levelLabels[state.academicLevel]||"—") + (state.age?(" · "+state.age+" anos"):"");
+    document.getElementById("prof-xp").textContent = state.xp;
+    document.getElementById("prof-score").textContent = state.score;
+    document.getElementById("prof-streak").textContent = state.streak;
+    var totalPhases = LEVELS.reduce(function(a,l){return a+l.phases.length;},0);
+    document.getElementById("prof-phases").textContent = state.completedPhases.length+"/"+totalPhases;
+
+    var areasWrap = document.getElementById("prof-areas");
+    areasWrap.innerHTML = "";
+    LEVELS.forEach(function(lvl){
+      var done = countDoneInLevel(state, lvl.id);
+      var pct = Math.round((done/lvl.phases.length)*100);
+      var row = document.createElement("div");
+      row.className = "area-row";
+      row.innerHTML =
+        '<div class="area-row-top"><span>'+lvl.emoji+' '+lvl.name+'</span><span>'+done+'/'+lvl.phases.length+'</span></div>'+
+        '<div class="area-bar"><div style="width:'+pct+'%;background:'+lvl.color+';"></div></div>';
+      areasWrap.appendChild(row);
+    });
+
+    var badgeWrap = document.getElementById("prof-badges");
+    badgeWrap.innerHTML = "";
+    ACHIEVEMENTS.forEach(function(a){
+      var unlocked = state.achievements.indexOf(a.id)!==-1;
+      var b = document.createElement("div");
+      b.className = "badge"+(unlocked?"":" locked");
+      b.title = a.desc;
+      b.innerHTML = a.icon+" "+a.name;
+      badgeWrap.appendChild(b);
+    });
+
+    document.getElementById("btn-view-diploma").style.display = state.diplomaUnlocked ? "block" : "none";
+  }
+  document.getElementById("btn-view-diploma").addEventListener("click", function(){
+    renderDiploma(); showScreen("screen-diploma");
+  });
+  document.getElementById("btn-exit-diploma").addEventListener("click", function(){
+    renderProfile(); showScreen("screen-profile");
+  });
+  document.getElementById("btn-diploma-profile").addEventListener("click", function(){
+    renderProfile(); showScreen("screen-profile");
+  });
+  function renderDiploma(){
+    document.getElementById("dip-name").textContent = state.name || "Aluno";
+    document.getElementById("dip-xp").textContent = state.xp;
+    document.getElementById("dip-badges").textContent = state.achievements.length+"/"+ACHIEVEMENTS.length;
+    var today = new Date();
+    var formatted = String(today.getDate()).padStart(2,"0")+"/"+String(today.getMonth()+1).padStart(2,"0")+"/"+today.getFullYear();
+    document.getElementById("dip-date").textContent = "Emitido em "+formatted;
+  }
+  document.getElementById("btn-reset").addEventListener("click", function(){
+    if(!confirm("Isto vai apagar todo o teu progresso. Continuar?")) return;
+    var name = state.name, age = state.age, academicLevel = state.academicLevel;
+    state = defaultState();
+    state.name = name; state.age = age; state.academicLevel = academicLevel;
+    saveState();
+    renderMap();
+    showScreen("screen-map");
+  });
+
+  /* ============ ACHIEVEMENTS ============ */
+  var achievementQueue = [];
+  function checkAchievements(){
+    ACHIEVEMENTS.forEach(function(a){
+      if(state.achievements.indexOf(a.id)===-1 && a.check(state)){
+        state.achievements.push(a.id);
+        achievementQueue.push(a);
+      }
+    });
+    saveState();
+    processAchievementQueue();
+  }
+  function processAchievementQueue(){
+    if(achievementQueue.length===0) return;
+    var a = achievementQueue.shift();
+    document.getElementById("achievement-text").textContent = a.icon+" "+a.name+" — "+a.desc;
+    document.getElementById("modal-achievement").classList.add("active");
+  }
+  document.getElementById("btn-achievement-ok").addEventListener("click", function(){
+    document.getElementById("modal-achievement").classList.remove("active");
+    setTimeout(processAchievementQueue, 300);
+  });
+
+  /* ============ INIT ============ */
+  function init(){
+    if(state.name && state.diagnosticDone){
+      registerVisit();
+      renderMap();
+      showScreen("screen-map");
+      maybeShowCuriosity();
+    } else if(state.name && !state.diagnosticDone){
+      showScreen("screen-onboarding");
+    } else {
+      showScreen("screen-onboarding");
+    }
+  }
+  init();
+
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("sw.js").catch(function () {});
+    });
+  }
+
+})();
+</script>
+</body>
+</html>
